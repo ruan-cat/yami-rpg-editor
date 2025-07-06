@@ -33,8 +33,8 @@ function copyTypescriptLib() {
 export default [
   {
     input: {
-      'main': 'src/main.js',
-      'apk': 'src/apk.js'
+      'main': 'src/main.ts',
+      'apk': 'src/apk.ts'
     },
     output: {
       dir: 'dist',

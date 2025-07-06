@@ -1,3 +1,5 @@
+/* eslint-disable */
+// @ts-nocheck
 // [YAMI RPG EDITOR]主线程
 
 // ******************************** 加载模块 ********************************
@@ -5,7 +7,7 @@ import Koa from "koa";
 import Mime from "mime-types";
 import QRCode from "qrcode";
 import ExcelJS from "exceljs";
-import * as apkProcessor from "./apk.js";
+import * as apkProcessor from "./apk";
 import { app, Menu, BrowserWindow, ipcMain, dialog, shell } from "electron";
 import fs from "fs";
 import { fork } from "child_process";
