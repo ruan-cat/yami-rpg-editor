@@ -1,24 +1,27 @@
 // [YAMI RPG EDITOR]主线程
 
 // ******************************** 加载模块 ********************************
-const Koa = require("koa");
-const Mime = require("mime-types");
-const QRCode = require("qrcode");
-const ExcelJS = require("exceljs");
-const apkProcessor = require("./apk.js");
-const {
-  app,
-  Menu,
-  BrowserWindow,
-  ipcMain,
-  dialog,
-  shell,
-} = require("electron");
-const fs = require("fs");
-const { fork } = require("child_process");
-const path = require("path");
-const os = require("os");
-const ts = require("typescript");
+import Koa from "koa";
+import Mime from "mime-types";
+import QRCode from "qrcode";
+import ExcelJS from "exceljs";
+import * as apkProcessor from "./apk.js";
+import { app, Menu, BrowserWindow, ipcMain, dialog, shell } from "electron";
+import fs from "fs";
+import { fork } from "child_process";
+import path from "path";
+import { fileURLToPath } from 'url';
+import os from "os";
+import ts from "typescript";
+
+// 获取 __dirname 等价物
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 全局变量
+let editor = null;
+let player = null;
+let tsc = null;
 
 // 如果启动时包含dirname参数
 // 表示应用运行在node.js调试模式中
@@ -27,7 +30,8 @@ let debug = false;
 let dirname = app.getAppPath();
 const regexp = /^--dirname=(.+)$/;
 for (const arg of process.argv) {
-  if ((match = arg.match(regexp))) {
+  let match;
+  if ((match = regexp.exec(arg))) {
     dirname = path.resolve(dirname, match[1]);
     debug = true;
     break;

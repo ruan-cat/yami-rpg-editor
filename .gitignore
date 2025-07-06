@@ -1,5 +1,8 @@
 # ignore
 node_modules/
+dist/
+build/
+*.log
 Project/config.json
 Project/Templates/electron-win-x64/
 Project/Templates/electron-mac-universal.app/
