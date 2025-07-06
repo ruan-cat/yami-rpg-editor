@@ -1,0 +1,16 @@
+'use strict'
+
+require('./config')
+require('./object-extensions')
+require('./array-extensions')
+require('./string-extensions')
+require('./number-extensions')
+require('./function-extensions')
+require('./css-extensions')
+require('./canvas-extensions')
+require('./event-extensions')
+require('./stage-color')
+require('./timer')
+require('./math-extensions')
+require('./clipboard')
+require('./dom-helpers') 
