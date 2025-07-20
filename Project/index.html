@@ -35,6 +35,7 @@
   <script src="Script/_log.js" defer></script>
   <script src="Script/_update.js" defer></script>
   <script src="Script/_webserver.js" defer></script>
+  <script src="Script/_pluginshop.js" defer></script>
   <script src="Script/_apkbuilder.js" defer></script>
   <script src="Script/_main.js" defer></script>
   <script src='vs/loader.js' defer></script>
@@ -46,6 +47,58 @@
 </head>
 
 <body>
+
+  <!-- 插件工坊窗口 -->
+  <window-frame id="plugin-workshop">
+    <title-bar>Plugin Workshop<close></close></title-bar>
+    <content-frame>
+      <grid-box class="uiElement-grid-box with-3-columns">
+        <text>用户名：<text id="plugin-workshop-login-username">...</text></text>
+        <text>角色：<text id="plugin-workshop-login-role">...</text></text>
+        <text>邮箱：<text id="plugin-workshop-login-email">...</text></text>
+        <button id="plugin-workshop-login-logout">退出登录</button>
+      </grid-box>
+      <hr />
+      <!-- 插件列表 -->
+      <grid-box id="plugin-workshop-ranking" class="uiElement-grid-box">
+        <text style="color: var(--text-color-unit)">最近更新</text>
+        <grid-box id="plugin-workshop-latest-plugin-list">
+        </grid-box>
+        <text style="color: var(--text-color-unit)">下载量</text>
+        <grid-box id="plugin-workshop-download-plugin-list">
+        </grid-box>
+      </grid-box>
+      <hr />
+      <!-- 分类 -->
+      <grid-box id="plugin-workshop-category">
+      </grid-box>
+      <grid-box>
+        <text style="color: var(--text-color-unit)">所有插件</text>
+        <box id="plugin-workshop-all-plugin-list">
+        </box>
+        <grid-box class="uiElement-grid-box with-3-columns">
+          <button id="plugin-workshop-previous-page">上一页</button>
+          <button>当前页码：<text id="plugin-workshop-current-page">1</text></text>
+            <button id="plugin-workshop-next-page">下一页</button>
+        </grid-box>
+      </grid-box>
+    </content-frame>
+  </window-frame>
+
+  <!-- 插件工坊窗口 登录 -->
+  <window-frame id="plugin-workshop-login">
+    <title-bar>Login<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>用户名：<text-box id="plugin-workshop-login-username-input"></text-box></text>
+        <text>密码：<text-box id="plugin-workshop-login-password-input"></text></text>
+        <box>
+          <button id="plugin-workshop-login-button">登录</button>
+          <a id="plugin-workshop-login-register">注册</a>
+        </box>
+      </grid-box>
+    </content-frame>
+  </window-frame>
 
   <!-- 标题栏 -->
   <box id="title">

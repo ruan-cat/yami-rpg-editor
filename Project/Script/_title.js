@@ -2204,9 +2204,13 @@ Menubar.popupOpenYamiMenu = function (target) {
             Window.open("windowProgress");
             const progressInfo = $("#windowProgress-info");
             progressInfo.textContent = "加载中...";
-            $("#export-apk").on("closed", () => {
-              ApkBuilder.reset();
-            }, { once: true });
+            $("#export-apk").on(
+              "closed",
+              () => {
+                ApkBuilder.reset();
+              },
+              { once: true }
+            );
             // 解析本地构建APK配置
             const pConfig = Path.resolve(
               Path.dirname(Editor.config.project),
@@ -2232,8 +2236,7 @@ Menubar.popupOpenYamiMenu = function (target) {
               keyStorePassword: "123456", // 密钥库密码
               keyAlias: "xuran", // 密钥别名
               keyPassword: "123456", // 密钥密码
-              apksignerPath:
-                "@/apksigner.bat", // apksigner路径
+              apksignerPath: "@/apksigner.bat", // apksigner路径
               zipalignPath: "@/zipalign.exe",
               signedApkPath: "$/app-debug-signed.apk", // 签名后APK路径
             };
@@ -2273,7 +2276,9 @@ Menubar.popupOpenYamiMenu = function (target) {
                 InputEvent(e, "iconPath")
               );
               $("#export-apk-apkIcon").on("mouseenter", (e) =>
-                $("#export-apk-apkIcon").setTooltip(ApkBuilder.processPathOnly(config.iconPath))
+                $("#export-apk-apkIcon").setTooltip(
+                  ApkBuilder.processPathOnly(config.iconPath)
+                )
               );
               $("#export-apk-apkPackageName").write(config.packageName);
               $("#export-apk-apkPackageName").on("input", (e) =>
@@ -2292,28 +2297,36 @@ Menubar.popupOpenYamiMenu = function (target) {
                 InputEvent(e, "outputDir")
               );
               $("#export-apk-outputDir").on("mouseenter", (e) =>
-                $("#export-apk-outputDir").setTooltip(ApkBuilder.processPathOnly(config.outputDir))
+                $("#export-apk-outputDir").setTooltip(
+                  ApkBuilder.processPathOnly(config.outputDir)
+                )
               );
               $("#export-apk-newApkPath").write(config.newApkPath);
               $("#export-apk-newApkPath").on("input", (e) =>
                 InputEvent(e, "newApkPath")
               );
               $("#export-apk-apktoolPath").on("mouseenter", (e) =>
-                $("#export-apk-apktoolPath").setTooltip(ApkBuilder.processPathOnly(config.apktoolPath))
+                $("#export-apk-apktoolPath").setTooltip(
+                  ApkBuilder.processPathOnly(config.apktoolPath)
+                )
               );
               $("#export-apk-apktoolPath").write(config.apktoolPath);
               $("#export-apk-apktoolPath").on("input", (e) =>
                 InputEvent(e, "apktoolPath")
               );
               $("#export-apk-apktoolPath").on("mouseenter", (e) =>
-                $("#export-apk-apktoolPath").setTooltip(ApkBuilder.processPathOnly(config.apktoolPath))
+                $("#export-apk-apktoolPath").setTooltip(
+                  ApkBuilder.processPathOnly(config.apktoolPath)
+                )
               );
               $("#export-apk-jksPath").write(config.jksPath);
               $("#export-apk-jksPath").on("input", (e) =>
                 InputEvent(e, "jksPath")
               );
               $("#export-apk-jksPath").on("mouseenter", (e) =>
-                $("#export-apk-jksPath").setTooltip(ApkBuilder.processPathOnly(config.jksPath))
+                $("#export-apk-jksPath").setTooltip(
+                  ApkBuilder.processPathOnly(config.jksPath)
+                )
               );
               $("#export-apk-keyStorePassword").write(config.keyStorePassword);
               $("#export-apk-keyStorePassword").on("input", (e) =>
@@ -2332,21 +2345,27 @@ Menubar.popupOpenYamiMenu = function (target) {
                 InputEvent(e, "apksignerPath")
               );
               $("#export-apk-apksignerPath").on("mouseenter", (e) =>
-                $("#export-apk-apksignerPath").setTooltip(ApkBuilder.processPathOnly(config.apksignerPath))
+                $("#export-apk-apksignerPath").setTooltip(
+                  ApkBuilder.processPathOnly(config.apksignerPath)
+                )
               );
               $("#export-apk-zipalignPath").write(config.zipalignPath);
               $("#export-apk-zipalignPath").on("input", (e) =>
                 InputEvent(e, "zipalignPath")
               );
               $("#export-apk-zipalignPath").on("mouseenter", (e) =>
-                $("#export-apk-zipalignPath").setTooltip(ApkBuilder.processPathOnly(config.zipalignPath))
+                $("#export-apk-zipalignPath").setTooltip(
+                  ApkBuilder.processPathOnly(config.zipalignPath)
+                )
               );
               $("#export-apk-signedApkPath").write(config.signedApkPath);
               $("#export-apk-signedApkPath").on("input", (e) =>
                 InputEvent(e, "signedApkPath")
               );
               $("#export-apk-signedApkPath").on("mouseenter", (e) =>
-                $("#export-apk-signedApkPath").setTooltip(ApkBuilder.processPathOnly(config.signedApkPath))
+                $("#export-apk-signedApkPath").setTooltip(
+                  ApkBuilder.processPathOnly(config.signedApkPath)
+                )
               );
               $("#export-apk-button").on("click", (e) => {
                 $("#export-apk-button").disable();
@@ -2357,11 +2376,175 @@ Menubar.popupOpenYamiMenu = function (target) {
             });
           },
         },
+        {
+          label: get("plugin-workshop"),
+          enabled: open,
+          click: async () => {
+            Window.open("plugin-workshop");
+
+            const updateAllList = async () => {
+              // 列表
+              const pluginAllList = await PluginWorkshop.getPluginAllList();
+              if (pluginAllList && pluginAllList.success) {
+                PluginWorkshop.totalPage = pluginAllList?.data?.total_pages;
+                PluginWorkshop.currentPage = pluginAllList?.data?.current_page;
+                const pluginAllListData = pluginAllList?.data?.plugins;
+                const pluginAllListDom = $("#plugin-workshop-all-plugin-list");
+                for (const plugin of pluginAllListData) {
+                  const pluginDom = PluginWorkshop.getPluginItem(plugin?.name, plugin?.version, plugin?.total_downloads, plugin?.category_name, plugin?.description, () => {
+                    PluginWorkshop.downloadPlugin(plugin?.plugin_id);
+                  });
+                  pluginAllListDom.appendChild(pluginDom);
+                }
+              }
+            }
+            const update = async () => {
+              // 获取分类
+              const categoryList = await PluginWorkshop.getCategoryList();
+              if (categoryList && categoryList.success) {
+                const categoryListData = categoryList?.data;
+                const categoryListDom = $("#plugin-workshop-category");
+                categoryListDom.style.gridTemplateColumns = `repeat(${categoryListData.length}, 1fr)`;
+                for (const category of categoryListData) {
+                  const categoryDom = document.createElement("button");
+                  categoryDom.textContent = category?.name;
+                  categoryDom.dataset.id = category?.id;
+                  categoryDom.classList.add("plugin-workshop-button");
+                  categoryListDom.appendChild(categoryDom);
+                }
+                // 最近更新插件排行榜
+                const latestPluginList = await PluginWorkshop.getLatestPluginList();
+                if (latestPluginList && latestPluginList.success) {
+                  const latestPluginListData = latestPluginList?.data;
+                  const latestPluginListDom = $("#plugin-workshop-latest-plugin-list");
+                  latestPluginListDom.style.gridTemplateColumns = `repeat(${latestPluginListData.length}, 1fr)`;
+                  for (const plugin of latestPluginListData) {
+                    const pluginDom = PluginWorkshop.getItem(plugin?.name, plugin?.version, plugin?.downloads);
+                    pluginDom.addEventListener("click", () => {
+                      PluginWorkshop.downloadPlugin(plugin?.plugin_id);
+                    });
+                    latestPluginListDom.appendChild(pluginDom);
+                  }
+                }
+                // 下载量排行榜
+                const downloadPluginList = await PluginWorkshop.getDownloadPluginList();
+                if (downloadPluginList && downloadPluginList.success) {
+                  const downloadPluginListData = downloadPluginList?.data;
+                  const downloadPluginListDom = $("#plugin-workshop-download-plugin-list");
+                  downloadPluginListDom.style.gridTemplateColumns = `repeat(${downloadPluginListData.length}, 1fr)`;
+                  for (const plugin of downloadPluginListData) {
+                    const pluginDom = PluginWorkshop.getItem(plugin?.name, plugin?.version, plugin?.total_downloads, () => {
+                      PluginWorkshop.downloadPlugin(plugin?.plugin_id);
+                    });
+                    downloadPluginListDom.appendChild(pluginDom);
+                  }
+                }
+                // 列表
+                await updateAllList()
+
+              } else {
+                console.log(categoryList?.message);
+              }
+            }
+
+            // 获取用户名
+            const path = Path.resolve(Path.dirname(Editor.config.project), "plugin-workshop.json");
+            const pluginWorkshop = JSON.parse(FS.readFileSync(path, "utf-8"));
+            PluginWorkshop.identifier = pluginWorkshop.identifier;
+            PluginWorkshop.password = pluginWorkshop.password;
+            // 自动登录
+            const data = await PluginWorkshop.login();
+            // 填充
+            $("#plugin-workshop-login-username-input").input.value = PluginWorkshop.identifier;
+            $("#plugin-workshop-login-password-input").input.value = PluginWorkshop.password;
+            $("#plugin-workshop-login-logout").on("click", async () => {
+              PluginWorkshop.identifier = "";
+              PluginWorkshop.password = "";
+              FSP.writeFile(path, JSON.stringify({
+                identifier: "",
+                password: "",
+              }));
+              $("#plugin-workshop-login-username").textContent = "";
+              $("#plugin-workshop-login-role").textContent = "";
+              $("#plugin-workshop-login-email").textContent = "";
+              Window.close("plugin-workshop");
+            });
+            if (FS.existsSync(path) && data && data.success) {
+              // 登录成功
+              const info = data?.data;
+              $("#plugin-workshop-login-username").textContent = info?.username;
+              $("#plugin-workshop-login-role").textContent = info?.role;
+              $("#plugin-workshop-login-email").textContent = info?.email;
+              update()
+              // 上下页
+              const previousPage = $("#plugin-workshop-previous-page");
+              const nextPage = $("#plugin-workshop-next-page");
+              previousPage.addEventListener("click", async () => {
+                await PluginWorkshop.previousPage();
+                updateAllList()
+              });
+              nextPage.addEventListener("click", async () => {
+                await PluginWorkshop.nextPage();
+                updateAllList()
+              });
+              // 窗口关闭时清空数据
+              $("#plugin-workshop").on("closed", PluginWorkshop.reset);
+            } else {
+              PluginWorkshop.identifier = "";
+              PluginWorkshop.password = "";
+              FSP.writeFile(path, JSON.stringify({
+                identifier: "",
+                password: "",
+              }));
+              Window.close("plugin-workshop");
+              Window.open("plugin-workshop-login");
+              $("#plugin-workshop-login-button").on("click", async () => {
+                const identifier = $("#plugin-workshop-login-username-input").input.value;
+                const password = $("#plugin-workshop-login-password-input").input.value;
+                PluginWorkshop.identifier = identifier;
+                PluginWorkshop.password = password;
+                FSP.writeFile(path, JSON.stringify({
+                  identifier: identifier,
+                  password: password,
+                }));
+                const data = await PluginWorkshop.login();
+                if (data && data.success) {
+                  update()
+                  Window.close("plugin-workshop-login");
+                  Window.open("plugin-workshop");
+                  // 登录成功
+                  const info = data?.data;
+                  $("#plugin-workshop-login-username").textContent = info?.username;
+                  $("#plugin-workshop-login-role").textContent = info?.role;
+                  $("#plugin-workshop-login-email").textContent = info?.email;
+                  // 上下页
+                  const previousPage = $("#plugin-workshop-previous-page");
+                  const nextPage = $("#plugin-workshop-next-page");
+                  previousPage.addEventListener("click", async () => {
+                    await PluginWorkshop.previousPage();
+                    updateAllList()
+                  });
+                  nextPage.addEventListener("click", async () => {
+                    await PluginWorkshop.nextPage();
+                    updateAllList()
+                  });
+                  // 窗口关闭时清空数据
+                  $("#plugin-workshop").on("closed", PluginWorkshop.reset);
+                } else {
+                  Window.confirm({
+                    message: `登录失败，请检查用户名和密码`,
+                  }, [{
+                    label: 'Confirm',
+                  }])
+                }
+              });
+            }
+          },
+        },
       ]
     );
   }
 };
-
 
 // 创建最近的文件项目
 Menubar.createRecentItems = function () {

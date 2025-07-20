@@ -2,6 +2,7 @@
 
 // ******************************** 加载模块 ********************************
 const Koa = require("koa");
+const axios = require("axios");
 const Mime = require("mime-types");
 const QRCode = require("qrcode");
 const ExcelJS = require("exceljs");
@@ -241,6 +242,43 @@ ipcMain.handle("from-excel", async (event) => {
     }
   }
   return rootNodes;
+});
+
+// ******************************** 网络 ********************************
+
+// POST请求
+ipcMain.handle("net-post", async (event, url, options) => {
+  // 利用axios请求POST数据，并返回结果
+  try {
+    const response = await axios.post(url, options.data, {
+      ...options,
+      headers: options.headers,
+      timeout: 10000, // 设置超时时间为10秒
+    });
+    return response.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message || "请求失败",
+    };
+  }
+});
+
+// GET请求
+ipcMain.handle("net-get", async (event, url, options) => {
+  try {
+    const response = await axios.get(url, {
+      ...options,
+      headers: options.headers,
+      timeout: 10000, // 设置超时时间为10秒
+    });
+    return response.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message || "请求失败",
+    };
+  }
 });
 
 // ******************************** 文件系统 ********************************

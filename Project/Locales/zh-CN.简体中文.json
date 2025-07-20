@@ -369,7 +369,8 @@
     },
     "menuOpenYami": {
       "qr": "QR Code",
-      "export_apk": "构建APK"
+      "export_apk": "构建APK",
+      "plugin-workshop": "插件工坊"
     },
     "menuTab": {
       "close": "关闭",
@@ -1691,6 +1692,8 @@
       "true": {"name": "是", "tip": "等待相关内容执行结束，接着执行后面的事件指令"},
       "false": {"name": "否", "tip": "立即执行后面的事件指令"}
     }},
+    "[comment]": "********** 插件工坊 **********",
+    "plugin-workshop": {"title": "插件工坊"},
 
     "[comment]": "********** 标题栏 **********",
     "[comment]": "~~~~~~~~",
