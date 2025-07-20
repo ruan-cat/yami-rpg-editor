@@ -10,10 +10,22 @@ const PluginWorkshop = {
       "net-post",
       `${PluginWorkshop.url}/api/auth/login`,
       {
-        method: "POST",
         data: {
           identifier: PluginWorkshop.identifier,
           password: PluginWorkshop.password
+        },
+      }
+    );
+  },
+  async register(email, username, password) {
+    return await require("electron").ipcRenderer.invoke(
+      "net-post",
+      `${PluginWorkshop.url}/api/auth/register`,
+      {
+        data: {
+          email: email,
+          username: username,
+          password: password
         },
       }
     );
@@ -22,27 +34,18 @@ const PluginWorkshop = {
     return await require("electron").ipcRenderer.invoke(
       "net-get",
       `${PluginWorkshop.url}/api/plugin/categories`,
-      {
-        method: "GET",
-      }
     );
   },
   async getLatestPluginList() {
     return await require("electron").ipcRenderer.invoke(
       "net-get",
-      `${PluginWorkshop.url}/api/plugin/latest-ranking`,
-      {
-        method: "GET",
-      }
+      `${PluginWorkshop.url}/api/plugin/latest-ranking`
     );
   },
   async getDownloadPluginList() {
     return await require("electron").ipcRenderer.invoke(
       "net-get",
       `${PluginWorkshop.url}/api/plugin/downloads-ranking`,
-      {
-        method: "GET",
-      }
     );
   },
   async downloadPlugin(id) {
@@ -57,7 +60,6 @@ const PluginWorkshop = {
       "net-get",
       `${PluginWorkshop.url}/api/plugin/list`,
       {
-        method: "GET",
         params: {
           page: PluginWorkshop.currentPage,
         }
@@ -127,5 +129,12 @@ const PluginWorkshop = {
     const newElement = element.cloneNode(true);
     element.parentNode.replaceChild(newElement, element);
     return newElement;
+  },
+  log(str) {
+    Window.confirm({
+      message: str,
+    }, [{
+      label: '确定',
+    }])
   }
 };

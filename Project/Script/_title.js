@@ -2531,11 +2531,27 @@ Menubar.popupOpenYamiMenu = function (target) {
                   // 窗口关闭时清空数据
                   $("#plugin-workshop").on("closed", PluginWorkshop.reset);
                 } else {
-                  Window.confirm({
-                    message: `登录失败，请检查用户名和密码`,
-                  }, [{
-                    label: 'Confirm',
-                  }])
+                  PluginWorkshop.log(data?.message);
+                }
+              });
+              $("#plugin-workshop-login-register").on("click", () => {
+                Window.close("plugin-workshop-login");
+                Window.open("plugin-workshop-register");
+              });
+              $("#plugin-workshop-register-login").on("click", () => {
+                Window.close("plugin-workshop-register");
+                Window.open("plugin-workshop-login");
+              });
+              $("#plugin-workshop-register-button").on("click", async () => {
+                const email = $("#plugin-workshop-register-email-input").input.value;
+                const username = $("#plugin-workshop-register-username-input").input.value;
+                const password = $("#plugin-workshop-register-password-input").input.value;
+                const data = await PluginWorkshop.register(email, username, password);
+                if (data && data.success) {
+                  Window.close("plugin-workshop-register");
+                  Window.open("plugin-workshop-login");
+                } else {
+                  PluginWorkshop.log(data?.message);
                 }
               });
             }

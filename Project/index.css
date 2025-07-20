@@ -12110,12 +12110,27 @@ text.export-apk-major {
  * --------------------------------
  */
 
-#plugin-workshop-login {
+ #plugin-workshop-login {
 	width: 324px;
 	height: 146px;
 }
 
 #plugin-workshop-login button {
+	width: 40px;
+	position: initial;
+}
+
+/* --------------------------------
+ * 插件工坊 - 注册
+ * --------------------------------
+ */
+
+ #plugin-workshop-register {
+	width: 324px;
+	height: 146px;
+}
+
+#plugin-workshop-register button {
 	width: 40px;
 	position: initial;
 }
