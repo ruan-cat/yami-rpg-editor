@@ -9,7 +9,7 @@
 	"scripts": {
 		"start": "electron . --dirname=Project",
 		"setup": "npm install",
-		"format": "prettier --write . --config prettier.config.js",
+		"format": "prettier --experimental-cli --write . --config prettier.config.js",
 		"build:win": "electron-builder --dir --win --x64",
 		"build:linux": "electron-builder --dir --linux --x64",
 		"build:mac": "electron-builder --dir --mac --x64",
