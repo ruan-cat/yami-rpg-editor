@@ -152,6 +152,7 @@ Title.openProject = function () {
 Title.closeProject = function () {
 	this.askWhetherToSave(() => {
 		Editor.close()
+		WebServer.stop()
 		Layout.manager.switch('home')
 	})
 }
