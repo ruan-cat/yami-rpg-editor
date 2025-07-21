@@ -17,6 +17,7 @@
 		"build:universal": "electron-builder --dir --mac --universal"
 	},
 	"devDependencies": {
+		"@prettier/plugin-oxc": "^0.0.4",
 		"@types/node": "^22.13.10",
 		"archiver": "^7.0.1",
 		"electron": "^20.3.12",
