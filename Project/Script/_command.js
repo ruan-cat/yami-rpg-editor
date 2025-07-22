@@ -141,13 +141,18 @@ Command.insert = function (target, id) {
 
 // 编辑指令
 Command.edit = function (target, command) {
+	const cur = target.elements[target.active].pre
+	if (!cur) {
+		return
+	}
+
 	const { id, params } = command
 	const handler = this.cases[id]
 	if (handler?.load instanceof Function) {
 		this.target = target
 		this.id = id
 		target.scrollAndResize()
-		const point = target.getSelectionPosition()
+		const point = cur.getBoundingClientRect()
 		if (point) {
 			Window.setPositionMode('absolute')
 			Window.absolutePos.x = point.x + 100
@@ -157,7 +162,11 @@ Command.edit = function (target, command) {
 			handler.load(params)
 		}
 	}
-	if (handler) return
+
+	if (handler) {
+		return
+	}
+
 	const meta = Data.scripts[id]
 	if (meta?.parameters.length > 0 && this.custom.commandNameMap[id]) {
 		this.target = target
@@ -177,11 +186,16 @@ Command.edit = function (target, command) {
 
 // 打开指令
 Command.open = function (id) {
+	const cur = this.target.elements[this.target.active].pre
+	if (!cur) {
+		return
+	}
+
 	const handler = this.cases[id]
 	if (handler !== undefined) {
 		this.id = id
 		if (handler.load) {
-			const point = this.target.getSelectionPosition()
+			const point = cur.getBoundingClientRect()
 			if (point) {
 				Window.setPositionMode('absolute')
 				Window.absolutePos.x = point.x + 100
@@ -199,7 +213,7 @@ Command.open = function (id) {
 	if (meta !== undefined && this.custom.commandNameMap[id]) {
 		this.id = id
 		if (meta.parameters.length !== 0) {
-			const point = this.target.getSelectionPosition()
+			const point = cur.getBoundingClientRect()
 			if (point) {
 				Window.setPositionMode('absolute')
 				Window.absolutePos.x = point.x + 100
@@ -239,7 +253,9 @@ Command.parse = function (command, varMap) {
 	const contents = handler
 		? handler.parse(params)
 		: this.custom.parse(id, params)
-	return Command.parseTextTags(contents)
+	const ret = Command.parseTextTags(contents)
+
+	return ret
 }
 
 // 解析混合模式
@@ -1304,6 +1320,7 @@ Command.parseTextTags = (function IIFE() {
 				}
 			}
 		}
+
 		return contents
 	}
 })()
@@ -1511,16 +1528,27 @@ Command.cases.showText = {
 			.push(Command.parseActor(target))
 			.push(Command.setCommaColors(parameters))
 		const contents = [
+			{ cmd: 'header' },
 			{ fold: true },
-			{ color: 'element' },
+			{ color: 'flow' },
 			{ text: alias + Token(': ') },
 			{ color: 'gray' },
 			{ color: 'save' },
 			{ text: words.join() }
 		]
+
 		content = GameLocal.replace(content)
 		content = Command.parseVariableTag(content)
-		this.appendTextLines(contents, alias, content)
+
+		this.appendTextLines(contents, '', content)
+		contents.push(
+			//qwe
+			{ break: true },
+			{ color: 'flow' },
+			{ text: Local.get('command.showText.end') },
+			{ cmd: 'footer' }
+		)
+
 		return contents
 	},
 	load: function ({
@@ -1673,6 +1701,7 @@ Command.cases.showChoices = {
 	},
 	parse: function ({ choices, parameters }) {
 		const contents = [
+			{ cmd: 'header' },
 			{ fold: true },
 			{ color: 'flow' },
 			{ text: Local.get('command.showChoices') + Token(': ') },
@@ -1695,13 +1724,20 @@ Command.cases.showChoices = {
 				}
 			)
 		}
+
 		contents.push({ color: 'flow' })
 		// 换行
 		contents.push({ break: true })
+
+		contents.push({ cmd: 'store' })
+
 		// 添加选项分支内容
 		const when = Local.get('command.showChoices.when')
+		//qwe
 		for (const choice of choices) {
 			contents.push(
+				{ cmd: 'restore' },
+				{ cmd: 'option' },
 				{ color: 'flow' },
 				{ text: when + ' ' },
 				{ color: 'text' },
@@ -1710,12 +1746,16 @@ Command.cases.showChoices = {
 						GameLocal.replace(choice.content)
 					)
 				},
+				{ cmd: 'item' },
 				{ children: choice.commands }
 			)
 		}
+
+		//结束标签
 		contents.push(
 			{ color: 'flow' },
-			{ text: Local.get('command.showChoices.end') }
+			{ text: Local.get('command.showChoices.end') },
+			{ cmd: 'footer' }
 		)
 		return contents
 	},
@@ -1758,18 +1798,30 @@ Command.cases.comment = {
 		$('#comment-confirm').on('click', this.save)
 	},
 	parse: function ({ comment }) {
-		const contents = []
 		const lines = comment.split('\n')
+		if (lines.length <= 1) {
+			return [{ color: 'comment' }, { text: lines[0] }]
+		}
+
+		const contents = [
+			{ cmd: 'header' },
+			{ fold: true },
+			{ color: 'comment' }
+		]
+
 		for (const line of lines) {
-			if (contents.length === 0) {
-				contents.push({ color: 'comment' }, { text: line })
-			} else {
-				contents.push({ break: true }, { text: line })
-			}
+			contents.push(
+				{ color: 'comment' },
+				{ text: line },
+				{ cmd: 'subhead' },
+				{ break: true }
+			)
 		}
-		if (lines.length > 1) {
-			contents.unshift({ fold: true })
-		}
+
+		contents.pop()
+		contents.pop()
+		contents.push({ cmd: 'footer' })
+
 		return contents
 	},
 	load: function ({ comment = '' }) {
@@ -3309,48 +3361,34 @@ Command.cases.setList = {
 				break
 			}
 			case 'set-boolean':
-				info = `${varName}${
-					Token('[') + Command.parseVariableNumber(index) + Token(']')
-				} ${equal} ${Command.setBooleanColor(constant)}`
+				info = `${varName}${Token('[') + Command.parseVariableNumber(index) + Token(']')} ${equal} ${Command.setBooleanColor(constant)}`
 				break
 			case 'set-number':
-				info = `${varName}${
-					Token('[') + Command.parseVariableNumber(index) + Token(']')
-				} ${equal} ${Command.setNumberColor(constant)}`
+				info = `${varName}${Token('[') + Command.parseVariableNumber(index) + Token(']')} ${equal} ${Command.setNumberColor(constant)}`
 				break
 			case 'set-string': {
 				const string = Command.setStringColor(
 					'"' + Command.parseMultiLineString(constant) + '"'
 				)
-				info = `${varName}${
-					Token('[') + Command.parseVariableNumber(index) + Token(']')
-				} ${equal} ${string}`
+				info = `${varName}${Token('[') + Command.parseVariableNumber(index) + Token(']')} ${equal} ${string}`
 				break
 			}
 			case 'set-variable':
-				info = `${varName}${
-					Token('[') + Command.parseVariableNumber(index) + Token(']')
-				} ${equal} ${Command.parseVariable(operand, 'any')}`
+				info = `${varName}${Token('[') + Command.parseVariableNumber(index) + Token(']')} ${equal} ${Command.parseVariable(operand, 'any')}`
 				break
 			case 'split-string': {
 				const label = Local.get('command.setList.split-string')
 				const text1 = Command.parseVariable(operand, 'string')
 				const text2 = Command.parseVariableString(separator)
 				const comma = Command.setDelimiterColor(', ')
-				info = `${varName} ${equal} ${label}${Token(
-					'('
-				)}${text1}${comma}${text2}${Token(')')}`
+				info = `${varName} ${equal} ${label}${Token('(')}${text1}${comma}${text2}${Token(')')}`
 				break
 			}
 			case 'push':
-				info = `${varName} ${Command.setOperatorColor(
-					'+='
-				)} ${Command.parseVariable(operand, 'any')}`
+				info = `${varName} ${Command.setOperatorColor('+=')} ${Command.parseVariable(operand, 'any')}`
 				break
 			case 'remove':
-				info = `${varName} ${Command.setOperatorColor(
-					'-='
-				)} ${Command.parseVariable(operand, 'any')}`
+				info = `${varName} ${Command.setOperatorColor('-=')} ${Command.parseVariable(operand, 'any')}`
 				break
 			case 'get-attribute-names':
 			case 'get-attribute-keys': {
@@ -3369,9 +3407,7 @@ Command.cases.setList = {
 			case 'get-actor-targets': {
 				const label = Local.get('command.setList.' + operation)
 				const actorInfo = Command.parseActor(actor)
-				info = `${varName} ${equal} ${label}${Token('(')}${actorInfo}${Token(
-					')'
-				)}`
+				info = `${varName} ${equal} ${label}${Token('(')}${actorInfo}${Token(')')}`
 				break
 			}
 		}
@@ -3567,7 +3603,7 @@ Command.cases.deleteVariable = {
 	}
 }
 
-// 分支条件
+// 条件分支
 Command.cases.if = {
 	elseCommands: null,
 	initialize: function () {
@@ -3586,10 +3622,12 @@ Command.cases.if = {
 		})
 	},
 	parse: function ({ branches, elseCommands }) {
-		const contents = [{ fold: true }]
+		const contents = [{ cmd: 'header' }, { fold: true }, { color: 'flow' }]
 		const textIf = Local.get('command.if')
 		for (const branch of branches) {
 			contents.push(
+				{ cmd: 'subhead' },
+				{ cmd: 'item' },
 				{ color: 'flow' },
 				{ text: textIf + ' ' },
 				{ color: 'normal' },
@@ -3599,12 +3637,18 @@ Command.cases.if = {
 		}
 		if (elseCommands) {
 			contents.push(
+				{ cmd: 'subhead' },
+				{ cmd: 'item' },
 				{ color: 'flow' },
 				{ text: Local.get('command.if.else') },
 				{ children: elseCommands }
 			)
 		}
-		contents.push({ color: 'flow' }, { text: Local.get('command.if.end') })
+		contents.push(
+			{ color: 'flow' },
+			{ text: Local.get('command.if.end') },
+			{ cmd: 'footer' }
+		)
 		return contents
 	},
 	load: function ({ branches = [], elseCommands = null }) {
@@ -3633,7 +3677,7 @@ Command.cases.if = {
 	}
 }
 
-// 匹配
+// 条件分支
 Command.cases.switch = {
 	defaultCommands: null,
 	initialize: function () {
@@ -3653,6 +3697,7 @@ Command.cases.switch = {
 	},
 	parse: function ({ variable, branches, defaultCommands }) {
 		const contents = [
+			{ cmd: 'header' },
 			{ fold: true },
 			{ color: 'flow' },
 			{ text: Local.get('command.switch') + ' ' },
@@ -3660,27 +3705,40 @@ Command.cases.switch = {
 			{ text: Command.parseVariable(variable, 'any') },
 			{ break: true }
 		]
+
+		contents.push({ cmd: 'store' })
+
 		const textCase = Local.get('command.switch.case')
 		for (const branch of branches) {
 			contents.push(
+				{ cmd: 'restore' },
+				{ cmd: 'option' },
 				{ color: 'flow' },
 				{ text: textCase + ' ' },
 				{ color: 'normal' },
-				{ text: SwitchBranch.parse(branch) },
+				{ text: SwitchBranch.parse(branch) + '' },
+				{ cmd: 'item' },
 				{ children: branch.commands }
 			)
 		}
+
 		if (defaultCommands) {
 			contents.push(
+				{ cmd: 'restore' },
+				{ cmd: 'option' },
 				{ color: 'flow' },
 				{ text: Local.get('command.switch.default') },
+				{ cmd: 'item' },
 				{ children: defaultCommands }
 			)
 		}
+
 		contents.push(
 			{ color: 'flow' },
-			{ text: Local.get('command.switch.end') }
+			{ text: Local.get('command.switch.end') },
+			{ cmd: 'footer' }
 		)
+
 		return contents
 	},
 	load: function ({
@@ -3741,7 +3799,7 @@ Command.cases.loop = {
 		})
 	},
 	parse: function ({ mode, conditions, commands }) {
-		const contents = [{ fold: true }, { color: 'flow' }]
+		const contents = [{ cmd: 'header' }, { fold: true }, { color: 'flow' }]
 		if (conditions.length !== 0) {
 			const condition = IfBranch.parse({ mode, conditions })
 			contents.push(
@@ -3753,10 +3811,13 @@ Command.cases.loop = {
 			contents.push({ text: Local.get('command.loop') })
 		}
 		contents.push(
+			{ cmd: 'item' },
 			{ children: commands },
 			{ color: 'flow' },
-			{ text: Local.get('command.loop.end') }
+			{ text: Local.get('command.loop.end') },
+			{ cmd: 'footer' }
 		)
+
 		return contents
 	},
 	load: function ({ mode = 'all', conditions = [], commands = [] }) {
@@ -3925,14 +3986,17 @@ Command.cases.forEach = {
 			}
 		}
 		return [
+			{ cmd: 'header' },
 			{ fold: true },
 			{ color: 'flow' },
 			{ text: Local.get('command.forEach') + ' ' },
 			{ color: 'restore' },
 			{ text: words.join() },
+			{ cmd: 'item' },
 			{ children: commands },
 			{ color: 'flow' },
-			{ text: Local.get('command.forEach.end') }
+			{ text: Local.get('command.forEach.end') },
+			{ cmd: 'footer' }
 		]
 	},
 	load: function ({
@@ -4083,11 +4147,14 @@ Command.cases.continue = {
 Command.cases.independent = {
 	parse: function ({ commands }) {
 		return [
+			{ cmd: 'header' },
 			{ fold: true },
 			{ color: 'flow' },
 			{ text: Local.get('command.independent') },
+			{ cmd: 'item' },
 			{ children: commands },
-			{ text: Local.get('command.independent.end') }
+			{ text: Local.get('command.independent.end') },
+			{ cmd: 'footer' }
 		]
 	},
 	save: function () {
@@ -4383,12 +4450,7 @@ Command.cases.callEvent = {
 						continue outer
 					}
 				}
-				const info = `${Command.setClass('error')}${name}${
-					Token(': ') +
-					Command.setWeakColor(
-						Local.get('eventParameterTypes.' + type)
-					)
-				}`
+				const info = `${Command.setClass('error')}${name}${Token(': ') + Command.setWeakColor(Local.get('eventParameterTypes.' + type))}`
 				words.push(info)
 			}
 		}
@@ -4568,9 +4630,7 @@ Command.cases.callEvent = {
 				if (event.description) {
 					eventName =
 						Command.setTooltip(
-							`<b>${Command.removeTextTags(eventName)}</b>\n${
-								event.description
-							}`
+							`<b>${Command.removeTextTags(eventName)}</b>\n${event.description}`
 						) + eventName
 				}
 				words.push(
@@ -5368,20 +5428,23 @@ Command.cases.registerEvent = {
 				break
 		}
 		const contents = [
+			{ cmd: 'header' },
 			{ color: 'flow' },
 			{
 				text:
 					Local.get('command.registerEvent.alias.' + operation) +
 					Token(': ')
 			},
-			{ text: words.join() }
+			{ text: words.join() },
+			{ cmd: 'item' }
 		]
 		if (commands) {
 			contents.unshift({ fold: true })
 			contents.push(
 				{ children: commands },
 				{ color: 'flow' },
-				{ text: Local.get('command.registerEvent.end') }
+				{ text: Local.get('command.registerEvent.end') },
+				{ cmd: 'footer' }
 			)
 		}
 		return contents
@@ -5637,14 +5700,17 @@ Command.cases.transition = {
 		const expression = varName + Token(' = ') + from + Token(' -> ') + to
 		const words = Command.words.push(expression).push(easing)
 		return [
+			{ cmd: 'header' },
 			{ fold: true },
 			{ color: 'flow' },
 			{ text: Local.get('command.transition') + ' ' },
 			{ color: 'restore' },
 			{ text: words.join() },
+			{ cmd: 'item' },
 			{ children: commands },
 			{ color: 'flow' },
-			{ text: Local.get('command.transition.end') }
+			{ text: Local.get('command.transition.end') },
+			{ cmd: 'footer' }
 		]
 	},
 	load: function ({
@@ -5696,12 +5762,15 @@ Command.cases.block = {
 		const blockNote =
 			note || asyncFlag ? Token(': ') + note + asyncFlag : ''
 		return [
+			{ cmd: 'header' },
 			{ fold: true },
 			{ color: 'flow' },
 			{ text: Local.get('command.block') + blockNote },
+			{ cmd: 'item' },
 			{ children: commands },
 			{ color: 'flow' },
-			{ text: Local.get('command.block.end') }
+			{ text: Local.get('command.block.end') },
+			{ cmd: 'footer' }
 		]
 	},
 	load: function ({ note = '', asynchronous = false, commands = [] }) {
@@ -11643,7 +11712,6 @@ Command.cases.setTriggerMotion = {
 Command.cases.setInventory = {
 	initialize: function () {
 		$('#setInventory-confirm').on('click', this.save)
-
 		// 创建操作选项
 		$('#setInventory-operation').loadItems([
 			{ name: 'Increase Money', value: 'increase-money' },
@@ -13390,12 +13458,36 @@ Command.cases.script = {
 				}
 			}
 		})
+		$('#script-change').on('click', () => {
+			const currentLanguage = this.editor.getModel().getLanguageId()
+			let languageId =
+				currentLanguage === 'javascript' ? 'typescript' : 'javascript'
+			const get = Local.createGetter('confirmation')
+			$('#script-change').name =
+				currentLanguage === 'javascript'
+					? 'script-change-ts'
+					: 'script-change-js'
+			$('#script-change').textContent = get(
+				currentLanguage === 'javascript'
+					? 'script-change-js'
+					: 'script-change-ts'
+			)
+			monaco.editor.setModelLanguage(this.model, languageId)
+		})
 	},
 	parse: function ({ script }) {
-		const contents = [{ script: script }]
-		if (script.includes('\n')) {
-			contents.unshift({ fold: true })
-		}
+		const contents = [
+			{ cmd: 'header' },
+			{ fold: true },
+			{ color: 'flow' },
+			{ text: Local.get('command.script.header') },
+			{ break: true },
+			{ script: script },
+			{ break: true },
+			{ color: 'flow' },
+			{ text: Local.get('command.script.footer') },
+			{ cmd: 'footer' }
+		]
 		return contents
 	},
 	load: function ({ script = '' }) {
@@ -13504,23 +13596,6 @@ Command.cases.script = {
 			}
 		})
 		this.model = this.editor.getModel()
-
-		$('#script-change').on('click', () => {
-			const currentLanguage = this.editor.getModel().getLanguageId()
-			let languageId =
-				currentLanguage === 'javascript' ? 'typescript' : 'javascript'
-			const get = Local.createGetter('confirmation')
-			$('#script-change').name =
-				currentLanguage === 'javascript'
-					? 'script-change-ts'
-					: 'script-change-js'
-			$('#script-change').textContent = get(
-				currentLanguage === 'javascript'
-					? 'script-change-js'
-					: 'script-change-ts'
-			)
-			monaco.editor.setModelLanguage(this.model, languageId)
-		})
 
 		// 编辑器 - 获得焦点
 		this.editor.getFocus = function () {
@@ -14115,8 +14190,13 @@ CommandSuggestion.initialize = function () {
 // 打开
 CommandSuggestion.open = function () {
 	const list = Command.target
+	const cur = list.elements[list.active].pre
 	list.scrollAndResize()
-	const point = list.getSelectionPosition()
+
+	window.a = list
+
+	//const point = list.getSelectionPosition()
+	const point = cur.getBoundingClientRect()
 	if (point) {
 		Window.open('command-widget')
 		const { widget, list, searcher } = this
@@ -16739,11 +16819,7 @@ NumberOperand.parseMathMethod = function (operand) {
 		case 'round': {
 			const varName = Command.parseVariable(operand.variable, 'number')
 			const decimals = operand.decimals
-			return `${label}${Token('(')}${varName}${
-				decimals
-					? `${Token(', ')}${Command.setNumberColor(decimals)}`
-					: ''
-			}${Token(')')}`
+			return `${label}${Token('(')}${varName}${decimals ? `${Token(', ')}${Command.setNumberColor(decimals)}` : ''}${Token(')')}`
 		}
 		case 'floor':
 		case 'ceil':
@@ -18138,10 +18214,7 @@ IfCondition.parseActorOperation = function ({
 		}
 		case 'has-skill-shortcut':
 		case 'has-item-shortcut':
-			return `${op} <${Command.parseVariableEnum(
-				'shortcut-key',
-				shortcutKey
-			)}>`
+			return `${op} <${Command.parseVariableEnum('shortcut-key', shortcutKey)}>`
 		case 'equipped':
 			return `${op} ${Command.parseFileName(equipmentId)}`
 		case 'is-teammate':

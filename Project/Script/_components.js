@@ -8612,6 +8612,7 @@ class CommonList extends HTMLElement {
 		if (elements.start !== start || elements.end !== end) {
 			elements.start = start
 			elements.end = end
+
 			self.updateHeadAndFoot()
 			const versionId = elements.versionId++
 			for (let i = start; i < end; i++) {
@@ -8639,6 +8640,8 @@ class CommonList extends HTMLElement {
 				}
 			}
 		}
+
+		self.updateLines?.()
 	}
 
 	// 静态 - 更新头部和尾部元素
@@ -10097,6 +10100,113 @@ class CommandList extends HTMLElement {
 		})
 	}
 
+	updateLines() {
+		var list = []
+		var depths = []
+		var header = null
+
+		for (var i = 0; i < this.elements.count; i++) {
+			var e = this.elements[i]
+
+			if (e.mark == 'header' && !e.dataItem.folded) {
+				header = e
+				list.push(header)
+				depths.push(header.depth)
+			}
+
+			if (e.lines) {
+				for (var line of e.lines) {
+					line.style.display = 'none'
+				}
+
+				if (depths.length > 0) {
+					//qwe
+					for (var j of depths) {
+						e.lines[j].style.display = 'block'
+					}
+				}
+			}
+
+			if (e.mark == 'footer') {
+				header = list.pop()
+				depths.pop()
+			}
+		}
+	}
+	initMark() {
+		for (var i = 0; i < this.elements.count; i++) {
+			var e = this.elements[i]
+			e.mark = e.mark || 'item'
+			e.classList.add(e.mark)
+		}
+	}
+
+	initIndent() {
+		var last = 0
+		var historys = [0]
+		var header = []
+		var list = [historys]
+		for (var i = 0; i < this.elements.count; i++) {
+			var e = this.elements[i]
+			e.depth = last
+
+			if (e.dataItem && e.dataItem.folded) {
+				continue
+			}
+
+			if (!e.cmd) {
+				continue
+			}
+
+			for (var s of e.cmd) {
+				if (s == 'header') {
+					header.push(last)
+					historys = [last]
+					list.push(historys)
+					continue
+				}
+
+				if (s == 'subhead') {
+					last = header[header.length - 1]
+					e.depth = last
+					continue
+				}
+
+				if (s == 'footer') {
+					e.depth = header.pop()
+					list.pop()
+					historys = list[list.length - 1]
+					last = e.depth
+					continue
+				}
+
+				if (s == 'option') {
+					last += 1
+					e.depth = last
+					continue
+				}
+
+				if (s == 'item') {
+					last += 1
+					continue
+				}
+
+				if (s == 'store') {
+					historys.push(last)
+					continue
+				}
+
+				if (s == 'restore') {
+					if (historys.length > 0) {
+						last = historys[historys.length - 1]
+						//e.depth = last
+					}
+					continue
+				}
+			}
+		}
+	}
+
 	// 更新列表
 	update() {
 		// 分析变量数据
@@ -10109,14 +10219,19 @@ class CommandList extends HTMLElement {
 		// 创建列表项
 		this.createItems(this.data, 0)
 
+		//qwe
 		// 写入索引
 		const { count } = elements
 		for (let i = 0; i < count; i++) {
-			elements[i].dataValue = i
+			let e = elements[i]
+			e.dataValue = i
 		}
 
 		// 清除多余的元素
 		this.clearElements(elements.count)
+
+		this.initMark()
+		this.initIndent()
 
 		// 发送更新事件
 		this.dispatchUpdateEvent()
@@ -10165,18 +10280,23 @@ class CommandList extends HTMLElement {
 	createItems(commands, indent, parent = null) {
 		const elements = this.elements
 		const length = commands.length
+
 		for (let i = 0; i < length; i++) {
 			const buffer = this.createCommandBuffer(commands, i, indent, parent)
+			//如果是折叠的
 			if (buffer[0].dataItem?.folded) {
+				//元素被折叠时进入
 				elements[elements.count++] = buffer[0]
 				this.createFoldedCommandBuffer(buffer, indent + 1, commands[i])
 				continue
 			}
+
 			for (const target of buffer) {
 				if (target instanceof HTMLElement) {
 					elements[elements.count++] = target
 					continue
 				}
+
 				if (target instanceof Array) {
 					this.createItems(target, indent + 1, commands[i])
 					continue
@@ -10197,6 +10317,7 @@ class CommandList extends HTMLElement {
 	createCommandBuffer(commands, index, indent, parent) {
 		const command = commands[index]
 		let buffer = command.buffer
+
 		if (buffer === undefined) {
 			buffer = []
 			buffer.enabled = true
@@ -10204,7 +10325,7 @@ class CommandList extends HTMLElement {
 				configurable: true,
 				value: buffer
 			})
-
+			//qwe
 			// 创建列表项
 			let li
 			let textId = ''
@@ -10225,6 +10346,7 @@ class CommandList extends HTMLElement {
 			// 创建内容
 			const contents = Command.parse(command, this.varMap)
 			const length = contents.length
+
 			for (let i = 0; i < length; i++) {
 				const content = contents[i]
 
@@ -10273,6 +10395,29 @@ class CommandList extends HTMLElement {
 					className = content.class
 				}
 
+				// 折叠
+				if (content.fold !== undefined) {
+					li.fold = document.createElement('command-fold')
+					li.appendChild(li.fold)
+				}
+
+				if (content.cmd !== undefined) {
+					li.cmd = li.cmd || []
+					li.cmd.push(content.cmd)
+
+					switch (content.cmd) {
+						case 'footer':
+							li.footer = document.createElement('command-footer')
+							li.footer.textContent = ''
+							li.appendChild(li.footer)
+						case 'header':
+						case 'subhead':
+						case 'option':
+							li.mark = li.mark || content.cmd
+							continue
+					}
+				}
+
 				// 换行
 				if (content.break !== undefined) {
 					li = document.createElement('command-item')
@@ -10286,16 +10431,9 @@ class CommandList extends HTMLElement {
 					continue
 				}
 
-				// 折叠
-				if (content.fold !== undefined) {
-					li.fold = document.createElement('command-fold')
-					li.appendChild(li.fold)
-				}
-
 				// 创建子项目
 				if (content.children !== undefined) {
 					buffer.push(content.children)
-
 					if (i < length) {
 						li = document.createElement('command-item')
 						li.contents = []
@@ -10311,7 +10449,7 @@ class CommandList extends HTMLElement {
 
 				// 创建脚本项目
 				if (content.script !== undefined) {
-					const MAX_LINES = 20
+					const MAX_LINES = 10
 					let code = content.script
 					const matches = code.match(/\n/g)
 					const lines = (matches?.length ?? 0) + 1
@@ -10328,8 +10466,8 @@ class CommandList extends HTMLElement {
 					}
 					const length = Math.min(lines, MAX_LINES + 1)
 					const items = new Array(length)
-					items[0] = li
-					for (let i = 1; i < length; i++) {
+					buffer.pop()
+					for (let i = 0; i < length; i++) {
 						li = document.createElement('command-item')
 						li.contents = []
 						li.dataKey = false
@@ -10337,15 +10475,18 @@ class CommandList extends HTMLElement {
 						li.dataItem = command
 						li.dataIndex = index
 						li.dataIndent = indent
+						li.mark = 'subhead'
 						buffer.push(li)
 						items[i] = li
 					}
+
 					if (lines > MAX_LINES) {
 						const text = document.createElement('text')
 						text.textContent = `... ${lines} lines`
 						text.addClass('gray')
 						li.appendChild(text)
 					}
+
 					Command.cases.script.colorizeCodeLines(items, code)
 				}
 			}
@@ -10384,19 +10525,22 @@ class CommandList extends HTMLElement {
 
 	// 更新指令元素
 	updateCommandElement(element) {
-		// 设置文本缩进
-		element.style.textIndent = this.computeTextIndent(element.dataIndent)
+		// 创建前缀
+		let pre = document.createElement('command-mark-major')
+		pre.textContent = ''
+		element.insertBefore(pre, element.firstElementChild)
+		element.pre = pre
 
-		// 创建标记
-		if (element.dataKey) {
-			const mark = document.createElement('command-mark-major')
-			mark.textContent = '>'
-			element.insertBefore(mark, element.firstElementChild)
-		} else {
-			const mark = document.createElement('command-mark-minor')
-			mark.textContent = ':'
-			element.insertBefore(mark, element.firstElementChild)
+		element.lines = []
+		for (let i = element.depth; i >= 0; i--) {
+			let line = document.createElement('command-line')
+			line.style.marginLeft = this.computeTextIndent(i)
+			element.insertBefore(line, element.firstElementChild)
+			element.lines[i] = line
 		}
+
+		// 设置文本缩进
+		element.style.textIndent = this.computeTextIndent(element.depth)
 
 		// 创建内容元素
 		for (const content of element.contents) {
@@ -10449,11 +10593,13 @@ class CommandList extends HTMLElement {
 					text.onpointerenter = CommandList.textPointerenter
 					text.onpointerleave = CommandList.textPointerleave
 				}
+
 				// 如果存在工具提示
 				if (content.tooltip) {
 					text.setTooltip(content.tooltip)
 					text.addClass('plugin-link')
 				}
+
 				// 如果存在自定义类名
 				if (content.class) {
 					if (content.class.indexOf('parent:') === 0) {
@@ -10462,10 +10608,12 @@ class CommandList extends HTMLElement {
 						text.addClass(content.class)
 					}
 				}
+
 				element.appendChild(text)
 				continue
 			}
 		}
+
 		element.contents = null
 
 		// 更新折叠状态
@@ -10481,6 +10629,7 @@ class CommandList extends HTMLElement {
 				element.folded = folded
 				if (folded) {
 					element.fold.textContent = '+'
+					element.classList.add('fold')
 					// 在头部列表项中添加省略号
 					if (!element.ellipsis) {
 						element.ellipsis =
@@ -10489,6 +10638,7 @@ class CommandList extends HTMLElement {
 						element.appendChild(element.ellipsis)
 					}
 				} else {
+					element.classList.remove('fold')
 					element.fold.textContent = '-'
 					// 在头部列表项中移除省略号
 					if (element.ellipsis) {
@@ -10575,15 +10725,19 @@ class CommandList extends HTMLElement {
 		// 限制范围
 		const elements = this.elements
 		const count = elements.count
+
 		start = Math.clamp(start, 0, count - 1)
 		end = Math.clamp(end, 0, count - 1)
+
 		let indent = Infinity
+
 		for (let i = start; i <= end; i++) {
 			const { dataIndent } = elements[i]
 			if (dataIndent < indent) {
 				indent = dataIndent
 			}
 		}
+
 		for (let i = start; i >= 0; i--) {
 			const element = elements[i]
 			if (element.dataIndent === indent && element.dataKey === true) {
@@ -10591,6 +10745,7 @@ class CommandList extends HTMLElement {
 				break
 			}
 		}
+
 		for (let i = end + 1; i < count; i++) {
 			const element = elements[i]
 			if (
@@ -10601,6 +10756,7 @@ class CommandList extends HTMLElement {
 				break
 			}
 		}
+
 		if (start !== end) {
 			const element = elements[end]
 			if (!element.dataItem) {
@@ -11029,7 +11185,9 @@ class CommandList extends HTMLElement {
 			if (!this.isParentEnabled(element)) {
 				return
 			}
+
 			this.inserting = element.dataItem === null
+
 			switch (this.inserting) {
 				case true:
 					Command.insert(this, '')
