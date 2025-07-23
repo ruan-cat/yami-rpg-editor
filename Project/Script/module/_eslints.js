@@ -42,7 +42,6 @@ CommandList.prototype.updateCommandElement = function (element) {
 				const element = list[i]
 				if (indent === null) {
 					indent = element.dataIndent
-					console.log('徐然', indent)
 				}
 				const needNode = element.lines?.[indent]
 				if (needNode && needNode.mark !== 'header')
