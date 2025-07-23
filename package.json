@@ -12,10 +12,15 @@
 		"setup": "pnpm install",
 		"format": "prettier --write . --config prettierrc.json",
 		"build:win": "electron-builder --dir --win --x64",
+		"build:winexe": "electron-builder --win --x64",
 		"build:linux": "electron-builder --dir --linux --x64",
+		"build:linuxexe": "electron-builder --linux --x64",
 		"build:mac": "electron-builder --dir --mac --x64",
+		"build:macexe": "electron-builder --mac --x64",
 		"build:macArm": "electron-builder --dir --mac --arm64",
-		"build:universal": "electron-builder --dir --mac --universal"
+		"build:macArmexe": "electron-builder --mac --arm64",
+		"build:universal": "electron-builder --dir --mac --universal",
+		"build:universalexe": "electron-builder --mac --universal"
 	},
 	"devDependencies": {
 		"@types/node": "^22.13.10",
@@ -87,19 +92,26 @@
 			}
 		],
 		"asar": false,
-		"asarUnpack": [],
+		"asarUnpack": [
+			"node_modules/typescript/lib",
+			"Project/Templates/electron-win-x64/resources/app/node_modules",
+			"Project/Templates/electron-mac-universal.app/Contents/resources/app/node_modules"
+		],
 		"extraFiles": [],
 		"nsis": {
-			"oneClick": true,
-			"shortcutName": "yami"
+			"oneClick": false,
+			"allowElevation": true,
+			"allowToChangeInstallationDirectory": true,
+			"shortcutName": "Open Yami RPG Editor",
+			"createDesktopShortcut": true,
+			"createStartMenuShortcut": true
 		},
 		"win": {
 			"icon": "icon.ico",
-			"executableName": "yami",
+			"executableName": "Open Yami RPG Editor",
 			"verifyUpdateCodeSignature": false,
 			"target": [
-				"nsis",
-				"zip"
+				"nsis"
 			]
 		},
 		"mac": {
