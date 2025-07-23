@@ -50,3 +50,7 @@ const WebServer = {
 			})
 	}
 }
+
+window.addEventListener('beforeunload', function () {
+	WebServer.stop()
+})
