@@ -4811,13 +4811,29 @@ class Inventory {
 		visited: Map<Actor, any> = new Map()
 	): InventorySaveData {
 		// 防止递归溢出：如果已访问过该库存，则只保存引用
-		if (visited.has(actor)) {
+		if (visited?.has(actor)) {
 			return {
 				ref: this.actor?.data?.id,
 				...visited.get(actor),
 			};
 		}
-		visited.set(actor, this.saveData(actor, visited));
+
+		// 先创建基础存档数据
+		const { list } = this;
+		const { length } = list;
+		const data = new Array(length);
+		for (let i = 0; i < length; i++) {
+			data[i] = list[i].saveData();
+		}
+		const saveData = {
+			list: data,
+			money: this.money,
+		};
+
+		// 记录当前库存的存档数据
+		visited.set(actor, saveData);
+
+		// 如果角色有保存的库存且不是当前库存，则返回引用数据
 		if (actor.savedInventory && actor.savedInventory !== this) {
 			return {
 				ref: this.actor?.data?.id,
@@ -4825,16 +4841,7 @@ class Inventory {
 			};
 		}
 
-		const { list } = this;
-		const { length } = list;
-		const data = new Array(length);
-		for (let i = 0; i < length; i++) {
-			data[i] = list[i].saveData();
-		}
-		return {
-			list: data,
-			money: this.money,
-		};
+		return saveData;
 	}
 
 	/**
