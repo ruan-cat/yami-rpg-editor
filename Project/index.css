@@ -7645,6 +7645,71 @@ node-item.related-event {
 }
 
 /* --------------------------------
+ * 获取对象属性
+ * --------------------------------
+ */
+#getObjectProperty {
+	width: 324px;
+	height: 220px;
+}
+
+#getObjectProperty-list {
+	height: 102px;
+}
+
+#getObjectProperty-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#getObjectProperty-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 设置对象属性
+ * --------------------------------
+ */
+#setObjectProperty {
+	width: 324px;
+	height: 220px;
+}
+
+#setObjectProperty-list {
+	height: 102px;
+}
+
+#setObjectProperty-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#setObjectProperty-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 获取对象属性 - 属性索引
+ * --------------------------------
+ */
+#ObjectProperty-index {
+	width: 324px;
+	height: 98px;
+}
+
+#ObjectProperty-index-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#ObjectProperty-index-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
  * 分支条件
  * --------------------------------
  */

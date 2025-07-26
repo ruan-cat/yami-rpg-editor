@@ -2731,6 +2731,60 @@ let Command = new class CommandCompiler {
     }
   }
 
+  	/** 获取对象变量 */
+	protected getObjectProperty({
+		variable,
+		saveVariable,
+		properties,
+	}: {
+		variable: VariableGetter;
+		saveVariable: VariableGetter;
+		properties: Array<any>;
+	}): CommandFunction {
+		const getter = Command.compileVariable(variable, Attribute.GET);
+		const setter = Command.compileVariable(saveVariable, Attribute.SET);
+		return () => {
+			const object = getter();
+			if (object !== undefined) {
+				const value = properties.reduce(
+					(object, property) => object[property.text],
+					object
+				);
+				setter(value);
+			}
+			return true;
+		};
+	}
+
+	/** 设置对象变量 */
+	protected setObjectProperty({
+		variable,
+		valueVariable,
+		properties,
+	}: {
+		variable: VariableGetter;
+		valueVariable: VariableGetter;
+		properties: Array<any>;
+	}): CommandFunction {
+		const getterV = Command.compileVariable(variable, Attribute.GET);
+		const getter = Command.compileVariable(valueVariable, Attribute.GET);
+		return () => {
+			const object = getterV();
+			if (object !== undefined) {
+				const value = getter();
+				properties.reduce((object, property) => {
+					// 到最后时设置值
+					if (property === properties[properties.length - 1]) {
+						return object[property.text] = value;
+					} else {
+						return object[property.text];
+					}
+				}, object);
+			}
+			return true;
+		};
+	}
+
   /** 如果 */
   protected if({branches, elseCommands}: {
     branches: Array<any>

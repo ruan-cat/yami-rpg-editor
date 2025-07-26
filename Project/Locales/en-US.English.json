@@ -893,6 +893,12 @@
       "deleteVariable": "Delete Variable",
       "deleteVariable.alias": "Delete",
       "deleteVariable.desc": "Delete a variable that is no longer needed",
+      "getObjectProperty": "Get Object Property",
+      "getObjectProperty.alias": "Get Object Property",
+      "getObjectProperty.desc": "Get the property of an Object",
+      "setObjectProperty": "Set Object Property",
+      "setObjectProperty.alias": "Set Object Property",
+      "setObjectProperty.desc": "Set the property of an Object",
 
       "flow": "Flow",
       "if": "If",
@@ -3883,6 +3889,23 @@
     "[comment]": "********** Command - Delete Variable **********",
     "deleteVariable": {"title": "Delete Variable"},
     "deleteVariable-variable": {"label": "Variable", "tip": "Delete this variable"},
+
+     "[comment]": "********** Command - Get Object Property **********",
+    "getObjectProperty": {"title": "Get Object Property"},
+    "getObjectProperty-variable": {"label": "Variable", "tip": "Get this variable"},
+    "getObjectProperty-save-variable": {"label": "Save to", "tip": "Save the obtained value to this variable"},
+    "getObjectProperty-list": {"label": "Index List", "tip": "Get from top to bottom in sequence"},
+
+    "[comment]": "********** Command - Set Object Property **********",
+    "setObjectProperty": {"title": "Set Object Property"},
+    "setObjectProperty-variable": {"label": "Object Variable", "tip": "The variable to be set"},
+    "setObjectProperty-value-variable": {"label": "Value", "tip": "Save the value of this variable to the index"},
+    "setObjectProperty-list": {"label": "Index List", "tip": "Obtain from top to bottom in sequence"},
+
+    "[comment]": "********** Command - Operation object attributes - Index **********",
+    "ObjectProperty-index": {"title": "Index"},
+    "ObjectProperty-index-name": {"label": "Property Name", "tip": "The name of the property to be retrieved"},
+
 
     "[comment]": "********** Command - If **********",
     "if": {"title": "If"},

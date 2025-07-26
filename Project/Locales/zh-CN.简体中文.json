@@ -893,6 +893,12 @@
       "deleteVariable": "删除变量",
       "deleteVariable.alias": "删除",
       "deleteVariable.desc": "删除不再需要的变量",
+      "getObjectProperty": "获取对象属性",
+      "getObjectProperty.alias": "获取对象属性",
+      "getObjectProperty.desc": "获取Obeject对象的属性",
+      "setObjectProperty": "设置对象属性",
+      "setObjectProperty.alias": "设置对象属性",
+      "setObjectProperty.desc": "设置Obeject对象的属性",
 
       "flow": "流程控制",
       "if": "如果",
@@ -3885,6 +3891,22 @@
     "[comment]": "********** 指令 - 删除变量 **********",
     "deleteVariable": {"title": "删除变量"},
     "deleteVariable-variable": {"label": "变量", "tip": "删除这个变量"},
+
+    "[comment]": "********** 指令 - 获取对象属性 **********",
+    "getObjectProperty": {"title": "获取对象属性"},
+    "getObjectProperty-variable": {"label": "变量", "tip": "获取这个变量"},
+    "getObjectProperty-save-variable": {"label": "保存到", "tip": "将获取到的值保存到这个变量"},
+    "getObjectProperty-list": {"label": "索引列表", "tip": "从上到下依次获取"},
+
+    "[comment]": "********** 指令 - 设置对象属性 **********",
+    "setObjectProperty": {"title": "设置对象属性"},
+    "setObjectProperty-variable": {"label": "对象变量", "tip": "被设置的变量"},
+    "setObjectProperty-value-variable": {"label": "值", "tip": "将这个变量的值保存到索引中"},
+    "setObjectProperty-list": {"label": "索引列表", "tip": "从上到下依次获取"},
+
+    "[comment]": "********** 指令 - 操作对象属性 - 索引 **********",
+    "ObjectProperty-index": {"title": "索引"},
+    "ObjectProperty-index-name": {"label": "属性名称", "tip": "要获取的属性名称"},
 
     "[comment]": "********** 指令 - 如果 **********",
     "if": {"title": "如果"},

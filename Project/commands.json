@@ -46,6 +46,14 @@
 			{
 				"class": "variable",
 				"value": "deleteVariable"
+			},
+			{
+				"class": "variable",
+				"value": "getObjectProperty"
+			},
+			{
+				"class": "variable",
+				"value": "setObjectProperty"
 			}
 		]
 	},

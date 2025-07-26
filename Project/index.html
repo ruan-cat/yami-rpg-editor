@@ -32,12 +32,19 @@
   <script src="Script/_browser.js" defer></script>
   <script src="Script/_inspector.js" defer></script>
   <script src="Script/_command.js" defer></script>
+
   <script src="Script/_log.js" defer></script>
   <script src="Script/_update.js" defer></script>
   <script src="Script/_steamworks.js" defer></script>
+  <!-- 社区- start -->
+  <!-- 指令 -->
+  <script src="Script/module/command/getObjectProperty.js" defer></script>
+  <!-- 模块 -->
   <script src="Script/module/_webserver.js" defer></script>
   <script src="Script/module/_apkbuilder.js" defer></script>
   <script src="Script/module/_eslints.js" defer></script>
+  <!-- 社区 - end -->
+
   <script src="Script/_main.js" defer></script>
   <script src='vs/loader.js' defer></script>
   <script src='vs/editor/editor.main.nls.js' defer></script>
@@ -3821,6 +3828,48 @@
       </grid-box>
       <button id="deleteVariable-confirm" name="confirm">Confirm</button>
       <button id="deleteVariable-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <!-- 获取对象属性 -->
+  <window-frame id="getObjectProperty">
+    <title-bar>getObjectProperty<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="getObjectProperty-variable" type="variable" filter="object"></custom-box>
+        <text>getObjectProperty</text><param-list id="getObjectProperty-list"></param-list>
+        <text>saveVariable</text><custom-box id="getObjectProperty-save-variable" type="variable"
+          filter="object"></custom-box>
+      </grid-box>
+      <button id="getObjectProperty-confirm" name="confirm">Confirm</button>
+      <button id="getObjectProperty-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+   <!-- 设置对象属性 -->
+  <window-frame id="setObjectProperty">
+    <title-bar>setObjectProperty<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>Variable</text><custom-box id="setObjectProperty-variable" type="variable" filter="object"></custom-box>
+        <text>setObjectProperty</text><param-list id="setObjectProperty-list"></param-list>
+        <text>valueVariable</text><custom-box id="setObjectProperty-value-variable" type="variable"
+          filter="all"></custom-box>
+      </grid-box>
+      <button id="setObjectProperty-confirm" name="confirm">Confirm</button>
+      <button id="setObjectProperty-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <!-- 操作对象属性 - 属性索引 -->
+  <window-frame id="ObjectProperty-index">
+    <title-bar>ObjectProperty-index<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>IndexName</text><text-box id="ObjectProperty-index-name"></text-box>
+      </grid-box>
+      <button id="ObjectProperty-index-confirm" name="confirm">Confirm</button>
+      <button id="ObjectProperty-index-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
 
