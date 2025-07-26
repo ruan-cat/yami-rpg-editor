@@ -3,10 +3,14 @@
 Yami rpg editor 是一款以用户友好性著称的 2D RPG 编辑器
 Yami rpg editor is 2D rpg editor on user-friendliness.
 
+
+PS：目前项目只维护了 Windows 版本，其他版本请自行编译，
+PS：目前项目多语言只维护中文、english，其他语言已弃用
+
 ## 开始
 
 ```shell
-npm install
+pnpm install
 ```
 
 将“Runtime/electron-packages.zip”解压到“Project”中，作为游戏部署的依赖项。
@@ -18,7 +22,7 @@ Since some files exceed 100MB, they have been split into multiple volumes.
 ## 运行
 
 ```shell
-npm run start
+pnpm run start
 ```
 
 ## 外部 Browser 插件
@@ -32,14 +36,17 @@ npm run start
 npm run build:win
 
 # macos
-npm run build:mac
+pnpm run build:mac
 
-npm run build:macArm
+pnpm run build:macArm
 
-npm run build:universal
+pnpm run build:universal
 
 # linux
-npm run build:linux
+pnpm run build:linux
+
+# exe
+# 后面加exe 则是打包setup版本
 
 ```
 
