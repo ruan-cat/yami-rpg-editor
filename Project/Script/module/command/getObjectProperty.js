@@ -47,7 +47,7 @@ Command.cases.getObjectProperty = {
 			)
 		}
 		return [
-			{ color: 'flow' },
+			{ color: 'variable' },
 			{ text: Local.get('command.getObjectProperty') + ' ' },
 			{ text: Command.parseVariable(variable, 'any') + ' -> ' }
 		]
@@ -109,7 +109,7 @@ Command.cases.setObjectProperty = {
 			)
 		}
 		return [
-			{ color: 'flow' },
+			{ color: 'variable' },
 			{ text: Local.get('command.setObjectProperty') + ' ' },
 			{ text: Command.parseVariable(variable, 'any') + ' -> ' }
 		]

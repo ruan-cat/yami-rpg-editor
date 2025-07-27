@@ -22,3 +22,4 @@ icon.ico
 icon.icns
 README.md
 package-lock.json
+!*.min.js

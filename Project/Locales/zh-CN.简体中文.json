@@ -1640,6 +1640,10 @@
       "script": "脚本",
       "script.desc": "编译并执行Javascript",
 
+      "network": "网络",
+      "requestURL": "请求链接",
+      "requestURLData": "数据体",
+
       "custom": "自定义",
       "invalidCommand": "无效指令",
       "blankCommandChar": "　"
@@ -4729,6 +4733,18 @@
       "water": {"name": "水面", "tip": "替换为水面"},
       "wall": {"name": "墙块", "tip": "替换为墙块"}
     }},
+    "[comment]": "********** 指令 - 请求URL **********",
+    "requestURL": {"title": "请求URL"},
+    "requestURL-url": {"label": "地址"},
+    "requestURL-header": {"label": "请求头", "tip": "headers请求头"},
+    "requestURL-method": {"label": "方法", "tip": "请求方法"},
+    "requestURL-data": {"label": "请求体", "tip": "请求体数据"},
+    "requestURL-callback": {"label": "回调","tip": "请求完成后的回调函数，@code表示返回值(错误为-1),@response表示响应数据"},
+
+    "[comment]": "********** 指令 - 请求 - keyValue **********",
+    "request-keyValue": {"title": "键值数据组"},
+    "request-keyValue-key": {"label": "键(key)"},
+    "request-keyValue-value": {"label": "值(value)"},
 
     "[comment]": "********** 指令 - 创建对象 **********",
     "createObject": {"title": "创建对象"},

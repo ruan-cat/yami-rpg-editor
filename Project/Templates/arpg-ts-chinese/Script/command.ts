@@ -7532,6 +7532,73 @@ let Command = new class CommandCompiler {
     }
   }
 
+  /* 请求URL */
+	protected requestURL({
+		url,
+		callback,
+		method = "GET",
+		data,
+		headers,
+	}: {
+		url: string | VariableGetter;
+		method: string;
+		callback: string;
+		headers: Record<string, string>[];
+		data: Record<string, string>[];
+	}): CommandFunction {
+		const toTranslate = (data: Record<string, string>[]) => {
+			return data.reduce((result, item) => {
+				const key =
+					typeof item.key === "string"
+						? item.key
+						: Command.compileVariable(item.key, Attribute.GET)();
+				const value =
+					typeof item.value === "string"
+						? item.value
+						: Command.compileVariable(item.value, Attribute.GET)();
+				result[key] = value;
+				return result;
+			}, {});
+		};
+		return () => {
+			const urlString =
+				typeof url === "string"
+					? url
+					: Command.compileVariable(url, Attribute.GET)();
+			// @ts-ignore
+			axios({
+				method,
+				url: urlString,
+				headers: toTranslate(headers),
+				...(method.toUpperCase() === "GET"
+					? { params: toTranslate(data) }
+					: { data: toTranslate(data) }),
+			})
+				.catch((error: any) => {
+					const command = EventManager.guidMap[callback];
+					if (command) {
+						const e = new EventHandler(command);
+						Attribute.SET(e.attributes, "@code", -1);
+						Attribute.SET(e.attributes, "@response", error.message);
+						EventHandler.call(e);
+					}
+					throw error;
+				})
+				.then((response: any) => {
+					if (!response) return;
+					const command = EventManager.guidMap[callback];
+					if (command) {
+						const e = new EventHandler(command);
+						Attribute.SET(e.attributes, "@code", response.status);
+						Attribute.SET(e.attributes, "@response", response.data);
+						EventHandler.call(e);
+					}
+				});
+			return true;
+		};
+	}
+
+
   /** 设置游戏速度 */
   protected setGameSpeed({speed, easingId, duration, wait}: {
     speed: number | VariableGetter

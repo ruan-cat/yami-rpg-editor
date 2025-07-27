@@ -1640,6 +1640,10 @@
       "script": "Script",
       "script.desc": "Compile and execute Javascript.",
 
+      "network": "Network",
+      "requestURL": "Request link",
+      "requestURLData": "Data set",
+
       "custom": "Custom",
       "invalidCommand": "Invalid Command",
       "blankCommandChar": " "
@@ -4728,6 +4732,14 @@
       "water": {"name": "Water", "tip": "Replace with water surface"},
       "wall": {"name": "Wall", "tip": "Replace with wall block"}
     }},
+
+    "[comment]": "********** Instruction - Request URL **********",
+    "requestURL": {"title": "Request URL"},
+    "requestURL-url": {"label": "Address"},
+    "requestURL-header": {"label": "Request Header", "tip": "headers request header"},
+    "requestURL-method": {"label": "Method", "tip": "request method"},
+    "requestURL-data": {"label": "Request Body", "tip": "request body data"},
+    "requestURL-callback": {"label": "Callback", "tip": "callback function after request completion, @code represents the return value (error is -1), @response represents the response data"},
 
     "[comment]": "********** Command - Create Object **********",
     "createObject": {"title": "Create Object"},

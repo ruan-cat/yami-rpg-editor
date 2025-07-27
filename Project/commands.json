@@ -602,6 +602,17 @@
 	},
 	{
 		"class": "folder",
+		"value": "network",
+		"expanded": true,
+		"children": [
+			{
+				"class": "network",
+				"value": "requestURL"
+			}
+		]
+	},
+	{
+		"class": "folder",
 		"value": "system",
 		"expanded": true,
 		"children": [

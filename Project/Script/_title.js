@@ -1153,6 +1153,10 @@ Deployment.readFileList = async function (platform) {
 		},
 		{
 			folder: true,
+			path: 'Module'
+		},
+		{
+			folder: true,
 			path: 'Icon'
 		},
 		{
@@ -1270,6 +1274,15 @@ Deployment.readFileList = async function (platform) {
 		{
 			data: Data.commands,
 			path: 'Data/commands.json'
+		}
+	)
+	// 添加 Module 文件
+	fileList.push(
+		{
+			path: 'Module/axios.min.js'
+		},
+		{
+			path: 'Module/exceljs.min.js'
 		}
 	)
 	// 添加基础文件列表
@@ -1508,7 +1521,6 @@ Deployment.confirm = function (event) {
 	const folder = $('#deployment-folder').read()
 	let path = Path.resolve(location, folder)
 	Window.close('deployment')
-	console.log('徐然', platform, location, folder)
 	if (platform === 'mac-universal') {
 		path += '.app'
 	}

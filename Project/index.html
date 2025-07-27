@@ -32,13 +32,13 @@
   <script src="Script/_browser.js" defer></script>
   <script src="Script/_inspector.js" defer></script>
   <script src="Script/_command.js" defer></script>
-
   <script src="Script/_log.js" defer></script>
   <script src="Script/_update.js" defer></script>
   <script src="Script/_steamworks.js" defer></script>
   <!-- 社区- start -->
   <!-- 指令 -->
   <script src="Script/module/command/getObjectProperty.js" defer></script>
+  <script src="Script/module/command/requestURL.js" defer></script>
   <!-- 模块 -->
   <script src="Script/module/_webserver.js" defer></script>
   <script src="Script/module/_apkbuilder.js" defer></script>
@@ -2976,7 +2976,7 @@
           <text class="href">刀里个刀</text><br />
           <text class="href" href="https://store.steampowered.com/app/2346410/Border_Pioneer">Yahzj</text><br />
           <text class="href" href="https://github.com/chunqian">Chunqian</text><br />
-          <text class="href" href="https://github.com/xiaoxustudio">徐然先生</text><br/>
+          <text class="href" href="https://github.com/xiaoxustudio">徐然先生</text><br />
           <text class="href">Alias</text><br />
           <text class="href" href="https://www.youtube.com/watch?v=3VcWWYIzKNY">Mr. Von Grimmsy</text><br />
           <text class="href" href="https://vk.com/sxdmedia">ZerosmO</text><br />
@@ -3846,7 +3846,7 @@
     </content-frame>
   </window-frame>
 
-   <!-- 设置对象属性 -->
+  <!-- 设置对象属性 -->
   <window-frame id="setObjectProperty">
     <title-bar>setObjectProperty<close></close></title-bar>
     <content-frame>
@@ -6035,6 +6035,35 @@
       </grid-box>
       <button id="setTerrain-confirm" name="confirm">Confirm</button>
       <button id="setTerrain-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <!-- 请求URL -->
+  <window-frame id="requestURL">
+    <title-bar>requestURL<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>URL</text><string-var id="requestURL-url"></string-var>
+        <text>Header</text><param-list id="requestURL-header"></param-list>
+        <text>Method</text><select-box id="requestURL-method"></select-box>
+        <text>Data</text><param-list id="requestURL-data"></param-list>
+        <text>CallBack</text><custom-box id="requestURL-callback" type="file" filter="event"></custom-box>
+      </grid-box>
+      <button id="requestURL-confirm" name="confirm">Confirm</button>
+      <button id="requestURL-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <!-- 请求 - keyValue -->
+  <window-frame id="request-keyValue">
+    <title-bar>Header<close></close></title-bar>
+    <content-frame>
+      <grid-box>
+        <text>key</text><string-var id="request-keyValue-key"></string-var>
+        <text>value</text><string-var id="request-keyValue-value"></string-var>
+      </grid-box>
+      <button id="request-keyValue-confirm" name="confirm">Confirm</button>
+      <button id="request-keyValue-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
 

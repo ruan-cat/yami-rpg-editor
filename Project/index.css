@@ -238,6 +238,7 @@
 	--command-color-skill: #804000;
 	--command-color-inventory: #f06000;
 	--command-color-scene: #0080c0;
+	--command-color-network: #297fff;
 	--command-color-system: #ff289c;
 	--command-color-custom: #c800a4;
 	--command-color-invalid-wave: #ff0000;
@@ -434,6 +435,7 @@
 	--command-color-skill: #f0e68c;
 	--command-color-inventory: #ffd700;
 	--command-color-scene: #00ced1;
+	--command-color-network: #75acff;
 	--command-color-system: #ff69b4;
 	--command-color-custom: #e8dcaa;
 	--command-color-invalid-wave: #f44747;
@@ -2900,6 +2902,10 @@ command-item:not(.selected) > .inventory {
 
 command-item:not(.selected) > .scene {
 	color: var(--command-color-scene);
+}
+
+command-item:not(.selected) > .network {
+	color: var(--command-color-network);
 }
 
 command-item:not(.selected) > .system {
@@ -7042,6 +7048,10 @@ node-item.related-event {
 	background-color: var(--command-color-scene);
 }
 
+.icon-command.network {
+	background-color: var(--command-color-network);
+}
+
 .icon-command.system {
 	background-color: var(--command-color-system);
 }
@@ -10337,6 +10347,52 @@ node-item.related-event {
 }
 
 #setTerrain-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 请求URL
+ * --------------------------------
+ */
+#requestURL {
+	width: 324px;
+	height: 360px;
+}
+
+#requestURL-header {
+	height: 102px;
+}
+
+#requestURL-data {
+	height: 102px;
+}
+
+#requestURL-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#requestURL-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
+ * 请求 - keyValue
+ * --------------------------------
+ */
+#request-keyValue {
+	width: 324px;
+	height: 120px;
+}
+
+#request-keyValue-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+
+#request-keyValue-cancel {
 	right: 10px;
 	bottom: 10px;
 }
