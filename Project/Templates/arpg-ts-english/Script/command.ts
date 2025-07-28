@@ -4114,10 +4114,24 @@ let Command = new class CommandCompiler {
     }
     switch (asynchronous) {
       case false: {
-        const functions = Command.compile(commands)
-        functions.remove(Command.readStack)
-        return functions
-      }
+        // 补丁：2025-7-28 xuran
+				const blockEndCallback = () => false; // 返回 false 结束指令块执行，但不结束整个事件
+				const functions = Command.compile(commands, blockEndCallback);
+				return () => {
+					// 保存当前执行状态
+					const savedCommandList = CommandList;
+					const savedCommandIndex = CommandIndex;
+					// 切换到指令块执行
+					CommandList = functions;
+					CommandIndex = 0;
+					// 执行指令块中的所有指令
+					while (CommandList[CommandIndex++]?.()) {}
+					// 恢复执行状态
+					CommandList = savedCommandList;
+					CommandIndex = savedCommandIndex;
+					return true;
+				};
+			}
       case true: {
         const commandList = Command.compileIndependent(commands)
         commandList.type = 'asynchronous'
