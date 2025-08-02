@@ -3588,9 +3588,12 @@ Command.cases.if = {
 	parse: function ({ branches, elseCommands }) {
 		const contents = [{ fold: true }]
 		const textIf = Local.get('command.if')
-		for (const branch of branches) {
+		const textElse = Local.get('command.if.else')
+		for (let index = 0; index < branches.length; index++) {
+			const branch = branches[index]
 			contents.push(
 				{ color: 'flow' },
+				...(index === 0 ? [] : [{ text: textElse + ' ' }]),
 				{ text: textIf + ' ' },
 				{ color: 'normal' },
 				{ text: IfBranch.parse(branch) },
