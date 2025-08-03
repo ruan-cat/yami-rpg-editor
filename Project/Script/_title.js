@@ -2200,6 +2200,16 @@ Menubar.popupOpenYamiMenu = function (target) {
 			},
 			[
 				{
+					label: get('setting'),
+					click: () => {
+						Window.open('setting')
+						SettingConfig.open()
+						$('#setting').on('closed', () => {
+							SettingConfig.close()
+						})
+					}
+				},
+				{
 					label: get('qr'),
 					enabled: open,
 					click: async () => {

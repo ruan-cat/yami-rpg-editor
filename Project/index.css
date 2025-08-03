@@ -6147,6 +6147,33 @@ anim-dir.selected {
 }
 
 /* --------------------------------
+ * 设置窗口
+ * --------------------------------
+ */
+
+#setting {
+	width: 520px;
+	height: 700px;
+}
+
+#setting-title-server {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	font-size: 1.2em;
+	font-weight: bold;
+	font-family: var(--font-family-bold);
+}
+
+#setting-cancel {
+	right: 10px;
+	bottom: 10px;
+}
+
+#setting-confirm {
+	right: 108px;
+	bottom: 10px;
+}
+/* --------------------------------
  * 图块组 - 自动图块
  * --------------------------------
  */
