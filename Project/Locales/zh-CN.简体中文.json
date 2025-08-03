@@ -368,6 +368,7 @@
       "updateLog": "更新日志"
     },
     "menuOpenYami": {
+      "setting":"设置",
       "qr": "QR Code",
       "export_apk": "构建APK"
     },
@@ -2802,6 +2803,10 @@
     "particleLayer-color-tint-1-box": {"label": "色调 - 绿", "tip": "输入颜色(绿) + 色调(绿) = 输出颜色(绿)"},
     "particleLayer-color-tint-2-box": {"label": "色调 - 蓝", "tip": "输入颜色(蓝) + 色调(蓝) = 输出颜色(蓝)"},
     "particleLayer-color-tint-3-box": {"label": "色调 - 灰", "tip": "灰度与饱和度相反，灰度越高则饱和度越低"},
+    "[comment]": "********** 设置 **********",
+     "setting": {"title": "设置"},
+     "setting-title-server": {"content": "本地服务"},
+     "setting-server-port": {"label": "端口", "tip": "本地服务监听的端口"},
 
     "[comment]": "********** 自动图块 **********",
     "autoTile": {"title": "自动图块"},

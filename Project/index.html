@@ -40,6 +40,7 @@
   <script src="Script/module/command/getObjectProperty.js" defer></script>
   <script src="Script/module/command/requestURL.js" defer></script>
   <!-- 模块 -->
+  <script src="Script/module/_settingconfig.js" defer></script>
   <script src="Script/module/_webserver.js" defer></script>
   <script src="Script/module/_apkbuilder.js" defer></script>
   <script src="Script/module/_eslints.js" defer></script>
@@ -2156,6 +2157,21 @@
       </page-frame>
     </page-manager>
   </box>
+
+  <!-- 设置窗口 -->
+  <window-frame id="setting">
+    <title-bar id="setting-title">Setting<maximize></maximize>
+      <close></close>
+    </title-bar>
+    <content-frame>
+      <grid-box id="setting-grid">
+        <text id="setting-title-server" class="setting-title">Server</text>
+        <text>Port</text><number-box id="setting-server-port" min="0" max="65535"></number-box>
+      </grid-box>
+      <button id="setting-confirm" name="confirm">Confirm</button>
+      <button id="setting-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
 
   <!-- 自动图块 -->
   <window-frame id="autoTile">

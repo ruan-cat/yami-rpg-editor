@@ -368,6 +368,7 @@
       "updateLog": "Update Log"
     },
     "menuOpenYami": {
+      "setting":"Setting",
       "qr": "QR Code",
       "export_apk": "Build APK"
     },
@@ -2800,6 +2801,12 @@
     "particleLayer-color-tint-1-box": {"label": "Tint - Green", "tip": "Input color (Green) + Hue (Green) = Output color (Green)"},
     "particleLayer-color-tint-2-box": {"label": "Tint - Blue", "tip": "Input color (Blue) + Hue (Blue) = Output color (Blue)"},
     "particleLayer-color-tint-3-box": {"label": "Tint - Grayscale", "tip": "Grayscale is the opposite of saturation; higher grayscale means lower saturation"},
+
+    "[comment]": "********** Settings **********",
+    "setting": {"title": "Settings"},
+    "setting-title-server": {"content": "Local Server"},
+    "setting-server-port": {"label": "Port", "tip": "The port on which the local server listens"},
+
 
     "[comment]": "********** Auto Tile **********",
     "autoTile": {"title": "Auto Tile"},
