@@ -2167,6 +2167,18 @@
       <grid-box id="setting-grid">
         <text id="setting-title-server" class="setting-title">Server</text>
         <text>Port</text><number-box id="setting-server-port" min="0" max="65535"></number-box>
+        <text id="setting-title-apkbuild" class="setting-title">APK Build</text>
+        <text>反编译输出目录</text><text-box id="setting-apkbuild-outputDir"></text-box>
+        <text>新APK输出路径</text><text-box id="setting-apkbuild-newApkPath"></text-box>
+        <text>apktool.jar路径</text><text-box id="setting-apkbuild-apktoolPath"></text-box>
+        <text id="setting-title-signed" class="setting-title">签名配置</text>
+        <text>JKS密钥库路径</text><text-box id="setting-sgined-jksPath"></text-box>
+        <text>密钥库密码</text><text-box id="setting-sgined-keyStorePassword"></text-box>
+        <text>密钥别名</text><text-box id="setting-sgined-keyAlias"></text-box>
+        <text>密钥密码</text><text-box id="setting-sgined-keyPassword"></text-box>
+        <text>apksigner路径</text><text-box id="setting-sgined-apksignerPath"></text-box>
+        <text>zipalign路径</text><text-box id="setting-sgined-zipalignPath"></text-box>
+        <text>签名后APK路径</text><text-box id="setting-sgined-signedApkPath"></text-box>
       </grid-box>
       <button id="setting-confirm" name="confirm">Confirm</button>
       <button id="setting-cancel" name="cancel">Cancel</button>
@@ -2954,22 +2966,11 @@
           <text>应用包名</text><text-box id="export-apk-apkPackageName"></text-box>
           <text>应用版本</text><text-box id="export-apk-apkVersionName"></text-box>
           <text>应用版本号</text><text-box id="export-apk-apkVersionCode"></text-box>
-          <text class="project-summary">反编译配置</text>
-          <text>反编译输出目录</text><text-box id="export-apk-outputDir"></text-box>
-          <text>新APK输出路径</text><text-box id="export-apk-newApkPath"></text-box>
-          <text>apktool.jar路径</text><text-box id="export-apk-apktoolPath"></text-box>
-          <text class="project-summary">签名配置</text>
-          <text>JKS密钥库路径</text><text-box id="export-apk-jksPath"></text-box>
-          <text>密钥库密码</text><text-box id="export-apk-keyStorePassword"></text-box>
-          <text>密钥别名</text><text-box id="export-apk-keyAlias"></text-box>
-          <text>密钥密码</text><text-box id="export-apk-keyPassword"></text-box>
-          <text>apksigner路径</text><text-box id="export-apk-apksignerPath"></text-box>
-          <text>zipalign路径</text><text-box id="export-apk-zipalignPath"></text-box>
-          <text>签名后APK路径</text><text-box id="export-apk-signedApkPath"></text-box>
         </grid-box>
         <box id="export-apk-PS">
           <text class="project-summary export-apk-major">PS（温馨提示）</text>
           <text class="export-apk-major">构建前请确保您安装了Java，apktool（内置）、apksigner（内置）、zipalign（内置）工具</text>
+          <text class="export-apk-major">构建前请确保您的项目路径不包含中文、且.preview文件夹存在(ctrl+s保存可快速创建)</text>
           <text class="export-apk-major">模板包无内置Taptap和生命周期，因此（移动端-API.指令）插件的部分功能无法使用，如需使用请自行构建<text class="href"
               href="https://github.com/Open-Yami-Community/yamiexample">示例项目</text></text>
           <text class="export-apk-major">@表示编辑器模板目录、$表示项目目录apk文件夹、~表示项目目录</text>

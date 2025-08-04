@@ -310,54 +310,6 @@ async function decompileApk(config) {
 	})
 }
 
-// 重新编译APK
-async function rebuildApk(config) {
-	// console.log("重新编译APK...");
-	// 修正参数顺序：将构建选项放在项目路径之前
-	const cmd = `java -jar "${config.apktoolPath}" b --no-compress resources.arsc --align 4 "${config.outputDir}" -o "${config.newApkPath}"`
-
-	try {
-		// console.log(`执行命令: ${cmd}`);
-		const { stdout, stderr } = await execPromise(cmd)
-
-		// 检查是否有警告或错误
-		if (stderr && (stderr.includes('W:') || stderr.includes('error:'))) {
-			// console.error("编译警告/错误:", stderr);
-
-			// 不是所有警告都是致命的，所以尝试继续
-			if (
-				!stderr.includes('failed linking references') &&
-				!stderr.includes('Exception in thread "main"')
-			) {
-				// console.log("重新编译成功（有警告）");
-				return { success: true }
-			}
-
-			return {
-				success: false,
-				error: `重新编译失败: ${stderr}`
-			}
-		}
-
-		console.log('重新编译成功')
-		return { success: true }
-	} catch (error) {
-		// 提供更详细的错误信息
-		const errorMsg =
-			`重新编译失败: ${error.stderr || error.message}\n` +
-			`可能原因:\n` +
-			`1. 资源冲突(如图标格式不统一)\n` +
-			`2. AndroidManifest.xml格式错误\n` +
-			`3. 缺少依赖框架\n` +
-			`4. public.xml 中的资源引用问题\n` +
-			`建议: 检查反编译目录中的错误日志`
-		return {
-			success: false,
-			error: errorMsg
-		}
-	}
-}
-
 // 修改AndroidManifest.xml
 async function modifyManifest(config) {
 	// console.log("修改包名、应用名称和版本信息...");
