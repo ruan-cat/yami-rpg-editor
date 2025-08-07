@@ -15,11 +15,9 @@ const ApkBuilder = new (class {
 		text.addClass('export-apk-major')
 		$('#export-apk-content').appendChild(text)
 		if (log.done) {
-			console.log('done', log)
 			this.isBindOn = false
 			$('#export-apk-button').enable()
 		}
-		console.log('log', log)
 		$('#export-apk-container').scrollTo({
 			top: $('#export-apk-container').scrollHeight
 		})
@@ -50,6 +48,7 @@ const ApkBuilder = new (class {
 		const list = Object.keys(config)
 		list.forEach((v) => {
 			config[v] = this.processPathOnly(config[v])
+			console.log(v, config[v])
 		})
 		config.projectPath = Path.dirname(Editor.config.project)
 		return config

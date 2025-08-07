@@ -2207,6 +2207,132 @@ Menubar.popupOpenYamiMenu = function (target) {
 						$('#setting').on('closed', () => {
 							SettingConfig.close()
 						})
+						const InputEvent = (e, summary, name) => {
+							SettingConfig.config[summary][name] = e.target.value
+						}
+						$('#setting-apkbuild-outputDir').write(
+							SettingConfig.config.apkbuild.outputDir
+						)
+						$('#setting-apkbuild-outputDir').on('input', (e) =>
+							InputEvent(e, 'apkbuild', 'outputDir')
+						)
+						$('#setting-apkbuild-outputDir').on('mouseenter', (e) =>
+							$('#setting-apkbuild-outputDir').setTooltip(
+								ApkBuilder.processPathOnly(
+									SettingConfig.config.apkbuild.outputDir
+								)
+							)
+						)
+						$('#setting-apkbuild-newApkPath').write(
+							SettingConfig.config.apkbuild.newApkPath
+						)
+						$('#setting-apkbuild-newApkPath').on('input', (e) =>
+							InputEvent(e, 'apkbuild', 'newApkPath')
+						)
+						$('#setting-apkbuild-apktoolPath').on(
+							'mouseenter',
+							(e) =>
+								$('#setting-apkbuild-apktoolPath').setTooltip(
+									ApkBuilder.processPathOnly(
+										SettingConfig.config.apkbuild
+											.apktoolPath
+									)
+								)
+						)
+						$('#setting-apkbuild-apktoolPath').write(
+							SettingConfig.config.apkbuild.apktoolPath
+						)
+						$('#setting-apkbuild-apktoolPath').on('input', (e) =>
+							InputEvent(e, 'apkbuild', 'apktoolPath')
+						)
+						$('#setting-apkbuild-apktoolPath').on(
+							'mouseenter',
+							(e) =>
+								$('#setting-apkbuild-apktoolPath').setTooltip(
+									ApkBuilder.processPathOnly(
+										SettingConfig.config.apkbuild
+											.apktoolPath
+									)
+								)
+						)
+						$('#setting-sgined-jksPath').write(
+							SettingConfig.config.sgined.jksPath
+						)
+						$('#setting-sgined-jksPath').on('input', (e) =>
+							InputEvent(e, 'sgined', 'jksPath')
+						)
+						$('#setting-sgined-jksPath').on('mouseenter', (e) =>
+							$('#setting-sgined-jksPath').setTooltip(
+								ApkBuilder.processPathOnly(
+									SettingConfig.config.sgined.jksPath
+								)
+							)
+						)
+						$('#setting-sgined-keyStorePassword').write(
+							SettingConfig.config.sgined.keyStorePassword
+						)
+						$('#setting-sgined-keyStorePassword').on('input', (e) =>
+							InputEvent(e, 'sgined', 'keyStorePassword')
+						)
+						$('#setting-sgined-keyAlias').write(
+							SettingConfig.config.sgined.keyAlias
+						)
+						$('#setting-sgined-keyAlias').on('input', (e) =>
+							InputEvent(e, 'sgined', 'keyAlias')
+						)
+						$('#setting-sgined-keyPassword').write(
+							SettingConfig.config.sgined.keyPassword
+						)
+						$('#setting-sgined-keyPassword').on('input', (e) =>
+							InputEvent(e, 'sgined', 'keyPassword')
+						)
+						$('#setting-sgined-apksignerPath').write(
+							SettingConfig.config.sgined.apksignerPath
+						)
+						$('#setting-sgined-apksignerPath').on('input', (e) =>
+							InputEvent(e, 'sgined', 'apksignerPath')
+						)
+						$('#setting-sgined-apksignerPath').on(
+							'mouseenter',
+							(e) =>
+								$('#setting-sgined-apksignerPath').setTooltip(
+									ApkBuilder.processPathOnly(
+										SettingConfig.config.sgined
+											.apksignerPath
+									)
+								)
+						)
+						$('#setting-sgined-zipalignPath').write(
+							SettingConfig.config.sgined.zipalignPath
+						)
+						$('#setting-sgined-zipalignPath').on('input', (e) =>
+							InputEvent(e, 'sgined', 'zipalignPath')
+						)
+						$('#setting-sgined-zipalignPath').on(
+							'mouseenter',
+							(e) =>
+								$('#setting-sgined-zipalignPath').setTooltip(
+									ApkBuilder.processPathOnly(
+										SettingConfig.config.sgined.zipalignPath
+									)
+								)
+						)
+						$('#setting-sgined-signedApkPath').write(
+							SettingConfig.config.sgined.signedApkPath
+						)
+						$('#setting-sgined-signedApkPath').on('input', (e) =>
+							InputEvent(e, 'sgined', 'signedApkPath')
+						)
+						$('#setting-sgined-signedApkPath').on(
+							'mouseenter',
+							(e) =>
+								$('#setting-sgined-signedApkPath').setTooltip(
+									ApkBuilder.processPathOnly(
+										SettingConfig.config.sgined
+											.signedApkPath
+									)
+								)
+						)
 					}
 				},
 				{
@@ -2267,27 +2393,12 @@ Menubar.popupOpenYamiMenu = function (target) {
 							'./config.json'
 						)
 						let config = {
-							apkPath: '@/app-release.apk', // 原始APK路径
-							outputDir: '$/decompiled', // 反编译输出目录
-							newApkPath: '$/app-release-re.apk', // 新APK输出路径
-							apktoolPath: '@/apktool.jar', // apktool.jar路径
-
 							// 自定义选项
 							packageName: 'com.xuran.newapp', // 新包名
 							appName: 'New App Name', // 新应用名称
 							iconPath: '~/Icon/icon.png', // 新图标路径
 							versionName: '1.0.0', // 版本名称
-							versionCode: 1, // 版本号（整数）
-
-							// 签名配置
-							isSign: true,
-							jksPath: '@/release.jks', // JKS密钥库路径
-							keyStorePassword: '123456', // 密钥库密码
-							keyAlias: 'xuran', // 密钥别名
-							keyPassword: '123456', // 密钥密码
-							apksignerPath: '@/apksigner.bat', // apksigner路径
-							zipalignPath: '@/zipalign.exe',
-							signedApkPath: '$/app-debug-signed.apk' // 签名后APK路径
+							versionCode: 1 // 版本号（整数）
 						}
 						const apkConfigSave = () => {
 							// 没有则创建父级文件夹
@@ -2352,113 +2463,16 @@ Menubar.popupOpenYamiMenu = function (target) {
 							$('#export-apk-apkVersionCode').on('input', (e) =>
 								InputEvent(e, 'versionCode')
 							)
-							$('#export-apk-outputDir').write(config.outputDir)
-							$('#export-apk-outputDir').on('input', (e) =>
-								InputEvent(e, 'outputDir')
-							)
-							$('#export-apk-outputDir').on('mouseenter', (e) =>
-								$('#export-apk-outputDir').setTooltip(
-									ApkBuilder.processPathOnly(config.outputDir)
-								)
-							)
-							$('#export-apk-newApkPath').write(config.newApkPath)
-							$('#export-apk-newApkPath').on('input', (e) =>
-								InputEvent(e, 'newApkPath')
-							)
-							$('#export-apk-apktoolPath').on('mouseenter', (e) =>
-								$('#export-apk-apktoolPath').setTooltip(
-									ApkBuilder.processPathOnly(
-										config.apktoolPath
-									)
-								)
-							)
-							$('#export-apk-apktoolPath').write(
-								config.apktoolPath
-							)
-							$('#export-apk-apktoolPath').on('input', (e) =>
-								InputEvent(e, 'apktoolPath')
-							)
-							$('#export-apk-apktoolPath').on('mouseenter', (e) =>
-								$('#export-apk-apktoolPath').setTooltip(
-									ApkBuilder.processPathOnly(
-										config.apktoolPath
-									)
-								)
-							)
-							$('#export-apk-jksPath').write(config.jksPath)
-							$('#export-apk-jksPath').on('input', (e) =>
-								InputEvent(e, 'jksPath')
-							)
-							$('#export-apk-jksPath').on('mouseenter', (e) =>
-								$('#export-apk-jksPath').setTooltip(
-									ApkBuilder.processPathOnly(config.jksPath)
-								)
-							)
-							$('#export-apk-keyStorePassword').write(
-								config.keyStorePassword
-							)
-							$('#export-apk-keyStorePassword').on('input', (e) =>
-								InputEvent(e, 'keyStorePassword')
-							)
-							$('#export-apk-keyAlias').write(config.keyAlias)
-							$('#export-apk-keyAlias').on('input', (e) =>
-								InputEvent(e, 'keyAlias')
-							)
-							$('#export-apk-keyPassword').write(
-								config.keyPassword
-							)
-							$('#export-apk-keyPassword').on('input', (e) =>
-								InputEvent(e, 'keyPassword')
-							)
-							$('#export-apk-apksignerPath').write(
-								config.apksignerPath
-							)
-							$('#export-apk-apksignerPath').on('input', (e) =>
-								InputEvent(e, 'apksignerPath')
-							)
-							$('#export-apk-apksignerPath').on(
-								'mouseenter',
-								(e) =>
-									$('#export-apk-apksignerPath').setTooltip(
-										ApkBuilder.processPathOnly(
-											config.apksignerPath
-										)
-									)
-							)
-							$('#export-apk-zipalignPath').write(
-								config.zipalignPath
-							)
-							$('#export-apk-zipalignPath').on('input', (e) =>
-								InputEvent(e, 'zipalignPath')
-							)
-							$('#export-apk-zipalignPath').on(
-								'mouseenter',
-								(e) =>
-									$('#export-apk-zipalignPath').setTooltip(
-										ApkBuilder.processPathOnly(
-											config.zipalignPath
-										)
-									)
-							)
-							$('#export-apk-signedApkPath').write(
-								config.signedApkPath
-							)
-							$('#export-apk-signedApkPath').on('input', (e) =>
-								InputEvent(e, 'signedApkPath')
-							)
-							$('#export-apk-signedApkPath').on(
-								'mouseenter',
-								(e) =>
-									$('#export-apk-signedApkPath').setTooltip(
-										ApkBuilder.processPathOnly(
-											config.signedApkPath
-										)
-									)
-							)
+
 							$('#export-apk-button').on('click', (e) => {
 								$('#export-apk-button').disable()
 								apkConfigSave()
-								ApkBuilder.build(config)
+								SettingConfig.load() // 更新配置
+								ApkBuilder.build({
+									...config,
+									...SettingConfig.config.apkbuild,
+									...SettingConfig.config.sgined
+								})
 							})
 							Window.close('windowProgress')
 						})
