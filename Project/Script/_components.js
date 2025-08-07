@@ -11235,6 +11235,8 @@ class CommandList extends HTMLElement {
 				let indent = element.dataIndent
 				// 如果当前缩进已经打印过至少一条指令，跳过无效指令
 				if (element.dataItem === null && lastIndent === indent) {
+					if (SettingConfig.config.other.copyAsTextKeepEmptyLine)
+						string += '\n'
 					continue
 				}
 				lastIndent = indent
@@ -11251,7 +11253,8 @@ class CommandList extends HTMLElement {
 						)
 					} else if (node.hasClass('comment')) {
 						// 添加注释指令前缀
-						string = string.slice(0, -1) + '#' + node.textContent
+						// string = string.slice(0, -1) + '#' + node.textContent
+						string += '#' + node.textContent
 					} else {
 						string += node.textContent
 					}

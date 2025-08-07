@@ -2804,9 +2804,22 @@
 
     "[comment]": "********** Settings **********",
     "setting": {"title": "Settings"},
-    "setting-title-server": {"content": "Local Server"},
-    "setting-server-port": {"label": "Port", "tip": "The port on which the local server listens"},
-
+    "setting-title-server": {"content": "Local Service"},
+    "setting-server-port": {"label": "Port", "tip": "The port that the local service listens on"},
+    "setting-title-apkbuild": {"content": "APK Build"},
+    "setting-apkbuild-outputDir": {"label": "Decompilation Output Directory", "tip": "The output directory for the decompiled APK files"},
+    "setting-apkbuild-newApkPath": {"label": "New APK Output Path", "tip": "The output path for the newly built APK file"},
+    "setting-apkbuild-apktoolPath": {"label": "apktool.jar Path", "tip": "The path of apktool.jar"},
+    "setting-title-signed": {"content": "Signing"},
+    "setting-signed-jksPath": {"label": "JKS Key Store Path", "tip": "The path of the JKS key store"},
+    "setting-signed-keyStorePassword": {"label": "Key Store Password", "tip": "The password of the key store"},
+    "setting-signed-keyAlias": {"label": "Key Alias", "tip": "The alias of the key"},
+    "setting-signed-keyPassword": {"label": "Key Password", "tip": "The password of the key"},
+    "setting-signed-apksignerPath": {"label": "apksigner Path", "tip": "The path of apksigner"},
+    "setting-signed-zipalignPath": {"label": "zipalign Path", "tip": "The path of zipalign"},
+    "setting-signed-signedApkPath": {"label": "Signed APK Path", "tip": "The output path for the signed APK file"},
+    "setting-title-other": {"content": "Other"},
+    "setting-other-copyAsTextKeepEmptyLine": {"label": "Keep Empty Lines", "tip": "Copy to text - Whether to keep empty lines"}}
 
     "[comment]": "********** Auto Tile **********",
     "autoTile": {"title": "Auto Tile"},
