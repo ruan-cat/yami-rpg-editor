@@ -483,6 +483,14 @@ const createEditorWindow = function () {
 			})
 		}
 	})
+	ipcMain.on('isBuilding-apk', (event) => {
+		event.returnValue = apkProcessor.isBuilding()
+	})
+
+	// 停止构建APK
+	ipcMain.handle('stop-build-apk', (event) => {
+		apkProcessor.abortBuild()
+	})
 
 	// 启动TSC事件
 	ipcMain.on('start-tsc', (event, projectDir) => {

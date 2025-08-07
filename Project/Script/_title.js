@@ -153,6 +153,8 @@ Title.closeProject = function () {
 	this.askWhetherToSave(() => {
 		Editor.close()
 		WebServer.stop()
+		ApkBuilder.stopBuild()
+		ApkBuilder.clearLog()
 		Layout.manager.switch('home')
 	})
 }
@@ -2474,6 +2476,15 @@ Menubar.popupOpenYamiMenu = function (target) {
 									...SettingConfig.config.sgined
 								})
 							})
+							// 加载状态
+							if (ApkBuilder.isBuilding()) {
+								$('#export-apk-button').disable()
+								ApkBuilder.logs.forEach((log) => {
+									ApkBuilder.apkLog(log)
+								})
+							} else {
+								$('#export-apk-button').enable()
+							}
 							Window.close('windowProgress')
 						})
 					}
