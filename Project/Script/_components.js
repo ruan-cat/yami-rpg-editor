@@ -11721,7 +11721,23 @@ class CommandList extends HTMLElement {
 	}
 
 	// 查找文本
-	findString(str, elements, searchMode = { caseInsensitive: false }) {
+	findString(
+		str,
+		elements,
+		searchMode = { caseInsensitive: false, regex: false }
+	) {
+		if (searchMode.regex) {
+			const strOri = str.trim()
+			try {
+				str = new RegExp(
+					strOri.substring(
+						strOri.indexOf('/') + 1,
+						strOri.lastIndexOf('/')
+					),
+					strOri.substring(strOri.lastIndexOf('/') + 1)
+				)
+			} catch {}
+		}
 		const findList = []
 		for (let i = 0; i < elements.length; i++) {
 			const element = elements[i]
@@ -11736,12 +11752,19 @@ class CommandList extends HTMLElement {
 						const _subfind = this.findString(
 							str,
 							realNode,
-							true
+							searchMode
 						).map((v) => ({
 							...v,
 							sub: element
 						}))
 						findList.push(..._subfind)
+					} else if (searchMode.regex && str instanceof RegExp) {
+						if (str.test(item.textContent))
+							findList.push({
+								node: item,
+								index: i,
+								sub: element
+							})
 					} else if (
 						item.textContent.includes(str) ||
 						(searchMode.caseInsensitive &&
@@ -11763,7 +11786,14 @@ class CommandList extends HTMLElement {
 					if (node.tagName === 'COMMAND-FOLD') {
 						continue
 					}
-					if (
+					if (searchMode.regex && str instanceof RegExp) {
+						if (str.test(node.textContent))
+							findList.push({
+								node,
+								index: i,
+								sub: element
+							})
+					} else if (
 						node.textContent.includes(str) ||
 						(searchMode.caseInsensitive &&
 							node.textContent

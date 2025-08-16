@@ -4,7 +4,7 @@ const SearchString = new (class {
 	log = $('#event-search-string-log')
 	lastArr = []
 	index = 0
-	searchMode = { caseInsensitive: false }
+	searchMode = { caseInsensitive: false, regex: false }
 	constructor() {
 		this.window.on('keydown', (e) => {
 			if (e.key == 'Enter' && this.lastArr.length > 0) {
@@ -15,13 +15,37 @@ const SearchString = new (class {
 		$('#event-search-string-previous').on('click', () => this.previous())
 		$('#event-search-string-next').on('click', () => this.next())
 		$('#event-search-string-search').on('input', (e) => this.input(e))
-		$('#event-search-string-case-insensitive').on('change', (e) => {
-			this.searchMode.caseInsensitive = e.target.read()
-			if ($('#event-search-string-search').read())
-				this.input({
-					target: { value: $('#event-search-string-search').read() }
-				})
-		})
+		$('#event-search-string-case-insensitive').on('change', (e) =>
+			this.change('caseInsensitive', e)
+		)
+		$('#event-search-string-regex').on('change', (e) =>
+			this.change('regex', e)
+		)
+	}
+	change(mode, e) {
+		this.searchMode[mode] = e.target.read()
+		switch (mode) {
+			case 'caseInsensitive':
+				if (this.searchMode[mode]) {
+					$('#event-search-string-regex').write(false)
+					$('#event-search-string-regex').disable()
+				} else {
+					$('#event-search-string-regex').enable()
+				}
+				break
+			case 'regex':
+				if (this.searchMode[mode]) {
+					$('#event-search-string-case-insensitive').write(false)
+					$('#event-search-string-case-insensitive').disable()
+				} else {
+					$('#event-search-string-case-insensitive').enable()
+				}
+				break
+		}
+		if ($('#event-search-string-search').read())
+			this.input({
+				target: { value: $('#event-search-string-search').read() }
+			})
 	}
 	locationLine() {
 		// 滚动到指定行
