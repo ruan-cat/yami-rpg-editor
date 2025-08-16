@@ -4,6 +4,7 @@ const SearchString = new (class {
 	log = $('#event-search-string-log')
 	lastArr = []
 	index = 0
+	searchMode = { caseInsensitive: false }
 	constructor() {
 		this.window.on('keydown', (e) => {
 			if (e.key == 'Enter' && this.lastArr.length > 0) {
@@ -14,15 +15,27 @@ const SearchString = new (class {
 		$('#event-search-string-previous').on('click', () => this.previous())
 		$('#event-search-string-next').on('click', () => this.next())
 		$('#event-search-string-search').on('input', (e) => this.input(e))
+		$('#event-search-string-case-insensitive').on('change', (e) => {
+			this.searchMode.caseInsensitive = e.target.read()
+			if ($('#event-search-string-search').read())
+				this.input({
+					target: { value: $('#event-search-string-search').read() }
+				})
+		})
 	}
 	locationLine() {
 		// 滚动到指定行
 		const arr = this.lastArr
 		if (arr.length == 0) return
 		const index = this.index
-		const currentNode = arr[index]
-		currentNode.node.classList.add('event-search-string-location-active')
-		this.current.scrollToRow(currentNode.index)
+		const current = arr[index]
+		current.node.classList.add('event-search-string-location-active')
+		this.current.scrollToRow(current.index)
+		if (current.sub) {
+			if (current.sub?.folded) {
+				this.current.fold(current.sub)
+			}
+		}
 	}
 	clear() {
 		this.lastArr.forEach((element) => {
@@ -42,7 +55,8 @@ const SearchString = new (class {
 			return
 		}
 		this.clear()
-		const findArr = this.current.findString(val)
+		const { elements } = this.current
+		const findArr = this.current.findString(val, elements, this.searchMode)
 		this.lastArr = findArr
 		findArr.forEach((element) => {
 			element.node.classList.add('event-search-string-active')

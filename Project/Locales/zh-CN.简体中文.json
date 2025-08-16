@@ -3312,6 +3312,7 @@
     "[comment]": "********** 搜索 - 字符串 **********",
     "event-search-string": {"title": "搜索字符串"},
     "event-search-string-search": {"label": "内容：","tip": "输入要搜索的字符串"},
+    "event-search-string-case-insensitive": {"label": "不区分大小写", "tip": "搜索时不区分大小写"},
 
     "[comment]": "********** 事件 **********",
     "[comment]": "~~~~~~~~",

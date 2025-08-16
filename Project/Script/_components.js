@@ -11721,22 +11721,58 @@ class CommandList extends HTMLElement {
 	}
 
 	// 查找文本
-	findString(str) {
+	findString(str, elements, searchMode = { caseInsensitive: false }) {
 		const findList = []
-		const { elements } = this
 		for (let i = 0; i < elements.length; i++) {
 			const element = elements[i]
+			if (!element) continue
+			if (element?.dataItem && element.dataItem.folded) {
+				// 查找折叠区域
+				const { buffer } = element.dataItem
+				if (!buffer) continue
+				for (const item of buffer) {
+					if (item instanceof Array) {
+						const realNode = item.map((v) => v.buffer[0])
+						const _subfind = this.findString(
+							str,
+							realNode,
+							true
+						).map((v) => ({
+							...v,
+							sub: element
+						}))
+						findList.push(..._subfind)
+					} else if (
+						item.textContent.includes(str) ||
+						(searchMode.caseInsensitive &&
+							item.textContent
+								.toLowerCase()
+								.includes(str.toLowerCase()))
+					) {
+						findList.push({ node: item, index: i, sub: element })
+					}
+				}
+			}
+
 			if (element.contents !== null) {
 				this.updateCommandElement(element)
 			}
-			for (const node of element.children) {
-				if (node.tagName === 'COMMAND-FOLD') {
-					continue
+
+			if (element?.children)
+				for (const node of element.children) {
+					if (node.tagName === 'COMMAND-FOLD') {
+						continue
+					}
+					if (
+						node.textContent.includes(str) ||
+						(searchMode.caseInsensitive &&
+							node.textContent
+								.toLowerCase()
+								.includes(str.toLowerCase()))
+					) {
+						findList.push({ node, index: i, sub: null })
+					}
 				}
-				if (node.textContent.includes(str)) {
-					findList.push({ node, index: i })
-				}
-			}
 		}
 		return findList
 	}
