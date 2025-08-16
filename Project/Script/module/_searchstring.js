@@ -4,7 +4,7 @@ const SearchString = new (class {
 	log = $('#event-search-string-log')
 	lastArr = []
 	index = 0
-	searchMode = { caseInsensitive: false, regex: false }
+	searchMode = { caseInsensitive: false, regex: false, matchLine: false }
 	constructor() {
 		this.window.on('keydown', (e) => {
 			if (e.key == 'Enter' && this.lastArr.length > 0) {
@@ -20,6 +20,9 @@ const SearchString = new (class {
 		)
 		$('#event-search-string-regex').on('change', (e) =>
 			this.change('regex', e)
+		)
+		$('#event-search-string-match-line').on('change', (e) =>
+			this.change('matchLine', e)
 		)
 	}
 	change(mode, e) {

@@ -11724,7 +11724,7 @@ class CommandList extends HTMLElement {
 	findString(
 		str,
 		elements,
-		searchMode = { caseInsensitive: false, regex: false }
+		searchMode = { caseInsensitive: false, regex: false, matchLine: false }
 	) {
 		if (searchMode.regex) {
 			const strOri = str.trim()
@@ -11742,6 +11742,39 @@ class CommandList extends HTMLElement {
 		for (let i = 0; i < elements.length; i++) {
 			const element = elements[i]
 			if (!element) continue
+			if (searchMode.matchLine) {
+				switch (element.tagName) {
+					case 'COMMAND-FOLD':
+					case 'COMMAND-CONTAINER':
+						continue
+					default:
+						if (searchMode.regex && str instanceof RegExp) {
+							if (str.test(element.textContent))
+								findList.push({
+									node: element,
+									index: i,
+									sub: element
+								})
+						} else if (
+							searchMode.caseInsensitive &&
+							element.textContent
+								.toLowerCase()
+								.includes(str.toLowerCase())
+						)
+							findList.push({
+								node: element,
+								index: i,
+								sub: null
+							})
+						else if (element.textContent.includes(str))
+							findList.push({
+								node: element,
+								index: i,
+								sub: null
+							})
+				}
+				continue
+			}
 			if (element?.dataItem && element.dataItem.folded) {
 				// 查找折叠区域
 				const { buffer } = element.dataItem
