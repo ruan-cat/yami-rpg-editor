@@ -1679,7 +1679,9 @@
       "confirm": "确定",
       "script-change-ts":"切换为TS",
       "script-change-js":"切换为JS",
-      "cancel": "取消"
+      "cancel": "取消",
+      "next": "下一个",
+      "previous": "上一个"
     }
   },
   "components": {
@@ -3112,6 +3114,7 @@
     "fileActor-inventory-equipment-id": {"label": "装备", "tip": "选择一个装备文件"},
     "fileActor-inventory-money": {"label": "金钱", "tip": "设置初始金钱的数量"},
 
+
     "[comment]": "********** 事件 - 参数 **********",
     "fileEvent-parameter": {"title": "参数"},
     "fileEvent-parameter-type": {"label": "类型", "tip": "调用时接收的值类型", "options": {
@@ -3305,6 +3308,10 @@
     "[comment]": "********** 设置数量 **********",
     "setQuantity": {"title": "设置数量"},
     "setQuantity-quantity": {"label": "数量", "tip": "输入项目数量"},
+    
+    "[comment]": "********** 搜索 - 字符串 **********",
+    "event-search-string": {"title": "搜索字符串"},
+    "event-search-string-search": {"label": "内容：","tip": "输入要搜索的字符串"},
 
     "[comment]": "********** 事件 **********",
     "[comment]": "~~~~~~~~",

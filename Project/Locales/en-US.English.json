@@ -1679,7 +1679,9 @@
       "confirm": "Confirm",
       "cancel": "Cancel",
       "script-change-ts":"Switch to TS",
-      "script-change-js":"Switch to JS"
+      "script-change-js":"Switch to JS",
+      "next": "Next",
+      "previous": "Previous"
     }
   },
   "components": {
@@ -2819,7 +2821,7 @@
     "setting-signed-zipalignPath": {"label": "zipalign Path", "tip": "The path of zipalign"},
     "setting-signed-signedApkPath": {"label": "Signed APK Path", "tip": "The output path for the signed APK file"},
     "setting-title-other": {"content": "Other"},
-    "setting-other-copyAsTextKeepEmptyLine": {"label": "Keep Empty Lines", "tip": "Copy to text - Whether to keep empty lines"}}
+    "setting-other-copyAsTextKeepEmptyLine": {"label": "Keep Empty Lines", "tip": "Copy to text - Whether to keep empty lines"},
 
     "[comment]": "********** Auto Tile **********",
     "autoTile": {"title": "Auto Tile"},
@@ -3304,6 +3306,10 @@
     "[comment]": "********** Set Quantity **********",
     "setQuantity": {"title": "Set Quantity"},
     "setQuantity-quantity": {"label": "Quantity", "tip": "Enter the item quantity"},
+
+    "[comment]": "********** Search - String **********",
+    "event-search-string": {"title": "Search String"},
+    "event-search-string-search": {"label": "Content：", "tip": "Enter the search content"},
 
     "[comment]": "********** Event **********",
     "[comment]": "~~~~~~~~",

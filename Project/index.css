@@ -6838,6 +6838,50 @@ anim-dir.selected {
 }
 
 /* --------------------------------
+ * 搜素字符串窗口
+ * --------------------------------
+ */
+.event-search-string-active {
+	background-color: var(--command-global-event-link-background);
+}
+.event-search-string-location-active {
+	border: 2px solid transparent; /* 初始透明边框 */
+	-webkit-animation: pulse-animation 0.5s ease-in-out infinite;
+	animation: pulse-animation 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-animation {
+	0% {
+		transform: scale(1);
+		border-color: transparent;
+	}
+	50% {
+		transform: scale(1.1);
+		border-color: #ffcc20;
+		box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+	}
+	100% {
+		transform: scale(1);
+		border-color: black;
+	}
+}
+
+#event-search-string {
+	width: 324px;
+	height: 98px;
+}
+
+#event-search-string-previous {
+	right: 108px;
+	bottom: 10px;
+}
+
+#event-search-string-next {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
  * 事件窗口
  * --------------------------------
  */

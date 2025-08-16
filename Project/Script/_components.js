@@ -1935,6 +1935,12 @@ class TextBox extends HTMLElement {
 		}
 	}
 
+	// 设置焦点
+	focus() {
+		super.focus()
+		this.input.focus()
+	}
+
 	// 获得焦点
 	getFocus(mode) {
 		return this.input.getFocus(mode)
@@ -11714,10 +11720,68 @@ class CommandList extends HTMLElement {
 		}
 	}
 
+	// 查找文本
+	findString(str) {
+		const findList = []
+		const { elements } = this
+		for (let i = 0; i < elements.length; i++) {
+			const element = elements[i]
+			if (element.contents !== null) {
+				this.updateCommandElement(element)
+			}
+			for (const node of element.children) {
+				if (node.tagName === 'COMMAND-FOLD') {
+					continue
+				}
+				if (node.textContent.includes(str)) {
+					findList.push({ node, index: i })
+				}
+			}
+		}
+		return findList
+	}
+
+	// 滚动到指定行
+	scrollToRow(targetIndex, position = 'center') {
+		const count = this.elements.count
+		const rowHeight = 20
+
+		// 边界检查
+		if (targetIndex < 0) targetIndex = 0
+		if (targetIndex >= count) targetIndex = count - 1
+
+		const ch = this.innerHeight
+		const targetRowTop = targetIndex * rowHeight
+
+		// 计算目标滚动位置
+		let targetScrollTop
+		switch (position) {
+			case 'top':
+				targetScrollTop = targetRowTop
+				break
+			case 'bottom':
+				targetScrollTop = targetRowTop + rowHeight - ch
+				break
+			default: // center
+				targetScrollTop = targetRowTop - ch / 2 + rowHeight / 2
+		}
+
+		// 限制滚动范围
+		const maxScrollTop = count * rowHeight - ch
+		targetScrollTop = Math.max(0, Math.min(targetScrollTop, maxScrollTop))
+
+		// 设置滚动位置并触发重绘
+		this.scrollTop = targetScrollTop
+		this.resize(this) // 立即调用resize确保更新
+	}
+
 	// 键盘按下事件
 	keydown(event) {
 		if (event.cmdOrCtrlKey) {
 			switch (event.code) {
+				case 'KeyF':
+					SearchString.open(this)
+					break
 				case 'KeyX':
 					this.copy()
 					this.delete()
