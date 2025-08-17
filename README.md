@@ -59,6 +59,8 @@ pnpm run build:linux
   <img src="https://contrib.rocks/image?repo=Open-Yami-Community/yami-rpg-editor">
 </a>
 
+贡献请参照[CONTRIBUTING](./CONTRIBUTING.md)
+
 ## 关于
 
 欢迎提出您宝贵的 **issue**，我们将会处理。
