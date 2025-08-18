@@ -10671,6 +10671,7 @@ class CommandList extends HTMLElement {
 				selections[count++] = element
 				element.addClass('selected')
 			}
+			console.log('count', count)
 			selections.count = count
 		}
 	}
@@ -11050,6 +11051,8 @@ class CommandList extends HTMLElement {
 			}
 		}
 	}
+
+	// 编辑数据
 
 	// 折叠指令
 	fold(element) {
@@ -12221,13 +12224,22 @@ class CommandList extends HTMLElement {
 							})
 						}
 					}
-					menuItems.push({
-						label: get('copy-as-text'),
-						enabled: valid,
-						click: () => {
-							this.copyAsText()
+					menuItems.push(
+						{
+							label: get('copy-as-text'),
+							enabled: valid,
+							click: () => {
+								this.copyAsText()
+							}
+						},
+						{
+							label: get('edit-data'),
+							enabled: valid,
+							click: () => {
+								this.openEdit()
+							}
 						}
-					})
+					)
 					Menu.popup(
 						{
 							x: event.clientX,

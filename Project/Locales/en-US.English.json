@@ -385,6 +385,7 @@
     "menuCommandList": {
       "script": "Script",
       "copy-as-text": "Copy as Text",
+      "edit-data": "Edit Data",
       "open-event": "Open Event"
     },
     "menuFileOnDrop": {
@@ -5569,6 +5570,9 @@
     "setResolution-uiScale": {"label": "UI Scale", "tip": "Display UI elements proportionally (automatically saved after deployment)"},
 
     "[comment]": "********** Command - Script **********",
-    "script": {"title": "Script"}
+    "script": {"title": "Script"},
+    
+    "[comment]": "********** Edit Data **********",
+    "edit-data": {"title": "Edit Data"}
   }
 }

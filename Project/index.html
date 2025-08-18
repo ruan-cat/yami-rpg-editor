@@ -35,11 +35,14 @@
   <script src="Script/_log.js" defer></script>
   <script src="Script/_update.js" defer></script>
   <script src="Script/_steamworks.js" defer></script>
+
   <!-- 社区- start -->
   <!-- 指令 -->
   <script src="Script/module/command/getObjectProperty.js" defer></script>
   <script src="Script/module/command/requestURL.js" defer></script>
   <!-- 模块 -->
+  <script src="Script/module/_edtordata.js" defer></script>
+  <script src="Script/module/_global.js" defer></script>
   <script src="Script/module/_searchstring.js" defer></script>
   <script src="Script/module/_settingconfig.js" defer></script>
   <script src="Script/module/_webserver.js" defer></script>
@@ -54,6 +57,7 @@
   <script src='vs/editor/javascript.js' defer></script>
   <script src='vs/editor/typescript.js' defer></script>
   <script src='vs/language/typescript/tsMode.js' defer></script>
+  <script src='vs/language/json/jsonMode.js' defer></script>
 </head>
 
 <body>
@@ -6223,6 +6227,20 @@
       </box>
       <button id="script-confirm" name="confirm">Confirm</button>
       <button id="script-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <!-- 编辑数据 -->
+  <window-frame id="edit-data">
+    <title-bar>edit data<text id='edit-data-mark' class='hidden'>✱</text>
+      <maximize id="edit-data-maximize"></maximize>
+      <close></close>
+    </title-bar>
+    <content-frame>
+      <box id='edit-data-current'>
+      </box>
+      <button id="edit-data-confirm" name="confirm">Confirm</button>
+      <button id="edit-data-cancel" name="cancel">Cancel</button>
     </content-frame>
   </window-frame>
 
