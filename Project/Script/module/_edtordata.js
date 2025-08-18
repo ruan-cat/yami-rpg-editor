@@ -165,11 +165,14 @@ const EditDataInstance = new (class {
 			})
 			this.currentContent.node.dataItem = parse
 			const { id: originalId, target: originalTarget } = Command
+			const originalInserting = this.eventListDom.inserting
 			try {
+				this.eventListDom.inserting = false
 				Command.id = parse.id
 				Command.target = this.eventListDom
 				Command.save(parse.params)
 			} finally {
+				this.eventListDom.inserting = originalInserting
 				Command.id = originalId
 				Command.target = originalTarget
 			}
