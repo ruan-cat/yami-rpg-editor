@@ -124,6 +124,7 @@ const EditDataInstance = new (class {
 		if (Array.isArray(this.currentContent)) {
 			for (const ind in this.currentContent) {
 				const { node, value } = this.currentContent[ind]
+				if (!(ind in parse)) continue
 				const changeContent = parse[ind]
 				if (JSON.stringify(value) === JSON.stringify(changeContent))
 					continue

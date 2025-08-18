@@ -10671,7 +10671,6 @@ class CommandList extends HTMLElement {
 				selections[count++] = element
 				element.addClass('selected')
 			}
-			console.log('count', count)
 			selections.count = count
 		}
 	}
