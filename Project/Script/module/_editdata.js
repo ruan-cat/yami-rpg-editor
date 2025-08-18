@@ -17,30 +17,12 @@ const EditDataInstance = new (class {
 	editorDom = $('#edit-data-current')
 	eventListDom = $('#event-commands')
 	currentContent = null
-	parseJSON(text) {
-		try {
-			const vaild = JSON.parse(text)
-			if (vaild.id && vaild.params)
-				return new (class {
-					id = vaild.id
-					params = vaild.params
-				})()
-			if (Array.isArray(vaild) && vaild.every((v) => v.id && v.params)) {
-				return vaild.map(
-					(v) =>
-						new (class {
-							id = v.id
-							params = v.params
-						})()
-				)
-			}
-			return null
-		} catch {
-			return null
-		}
-	}
 	constructor() {
+		$('#edit-data').on('resize', () => {
+			this.resize()
+		})
 		$('#edit-data-confirm').on('click', this.save.bind(this))
+
 		// 窗口关闭事件
 		this.editorParent.on('close', (event) => {
 			if (this.changed) {
@@ -83,6 +65,54 @@ const EditDataInstance = new (class {
 		this.editorParent.on('closed', () => {
 			this.model.setValue('')
 		})
+	}
+	isMaximized() {
+		return $('#edit-data').hasClass('maximized')
+	}
+	resize() {
+		const content = this.editorDom
+		const parent = content.parentElement
+		if (!this.isMaximized()) {
+			content.style.width = ''
+			content.style.height = ''
+			const boundingRect = content.getBoundingClientRect()
+			this.editor.layout({
+				width: boundingRect.width,
+				height: parent.clientHeight - 60
+			})
+		} else {
+			const boundingRect = content.getBoundingClientRect()
+			// 保持content左右间距相同
+			content.style.width =
+				parent.clientWidth - boundingRect.left * 2 + 'px'
+			content.style.height = parent.clientHeight - 60 + 'px'
+			this.editor.layout({
+				width: parseFloat(content.style.width),
+				height: parseFloat(content.style.height)
+			})
+		}
+	}
+	parseJSON(text) {
+		try {
+			const vaild = JSON.parse(text)
+			if (vaild.id && vaild.params)
+				return new (class {
+					id = vaild.id
+					params = vaild.params
+				})()
+			if (Array.isArray(vaild) && vaild.every((v) => v.id && v.params)) {
+				return vaild.map(
+					(v) =>
+						new (class {
+							id = v.id
+							params = v.params
+						})()
+				)
+			}
+			return null
+		} catch {
+			return null
+		}
 	}
 	save() {
 		const modelValue = this.model.getValue()
