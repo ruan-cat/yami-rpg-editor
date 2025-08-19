@@ -5856,20 +5856,61 @@ class WindowElement extends UIElement {
         this.drawChildren()
         break
       case 'hidden':
-        if (!GL.depthTest) {
-          GL.alpha = 1
-          GL.blend = 'normal'
-          GL.depthTest = true
-          GL.enable(GL.DEPTH_TEST)
-          GL.depthFunc(GL.ALWAYS)
-          GL.matrix.set(this.matrix)
-          GL.fillRect(this.x, this.y, this.width, this.height, 0x00000000)
-          GL.depthFunc(GL.EQUAL)
-          this.drawChildren()
-          GL.clear(GL.DEPTH_BUFFER_BIT)
-          GL.disable(GL.DEPTH_TEST)
-          GL.depthTest = false
-        }
+        const matrix = GL.matrix.set(this.matrix)
+				const L = this.x
+				const T = this.y
+				const R = L + this.width
+				const B = T + this.height
+				const a = matrix[0]
+				const b = matrix[1]
+				const c = matrix[3]
+				const d = matrix[4]
+				const e = matrix[6]
+				const f = matrix[7]
+				const x1 = Math.min(a * L + c * T + e, a * L + c * B + e, a * R + c * B + e, a * R + c * T + e)
+				const y1 = Math.min(b * L + d * T + f, b * L + d * B + f, b * R + d * B + f, b * R + d * T + f)
+				const x2 = Math.max(a * L + c * T + e, a * L + c * B + e, a * R + c * B + e, a * R + c * T + e)
+				const y2 = Math.max(b * L + d * T + f, b * L + d * B + f, b * R + d * B + f, b * R + d * T + f)
+				let sl = Math.max(Math.floor(x1), 0)
+				let st = Math.max(Math.floor(y1), 0)
+				let sr = Math.min(Math.ceil(x2), GL.width)
+				let sb = Math.min(Math.ceil(y2), GL.height)
+				let sw = sr - sl
+				let sh = sb - st
+				if (sw > 0 && sh > 0) {
+					const wasEnabled = GL.isEnabled(GL.SCISSOR_TEST)
+					let prevBox = null
+					// 计算当前裁剪框(以左下角为原点)
+					let nx = sl
+					let ny = GL.height - sb
+					let nw = sw
+					let nh = sh
+					if (wasEnabled) {
+						prevBox = GL.getParameter(GL.SCISSOR_BOX)
+						const px = prevBox[0]
+						const py = prevBox[1]
+						const pw = prevBox[2]
+						const ph = prevBox[3]
+						const pr = px + pw
+						const pb = py + ph
+						const nr = nx + nw
+						const nb = ny + nh
+						nx = Math.max(px, nx)
+						ny = Math.max(py, ny)
+						nw = Math.max(0, Math.min(pr, nr) - nx)
+						nh = Math.max(0, Math.min(pb, nb) - ny)
+					}
+					if (nw > 0 && nh > 0) {
+						GL.enable(GL.SCISSOR_TEST)
+						GL.scissor(nx, ny, nw, nh)
+						this.drawChildren()
+						if (wasEnabled && prevBox) {
+							GL.scissor(prevBox[0], prevBox[1], prevBox[2], prevBox[3])
+						} else if (!wasEnabled) {
+							GL.disable(GL.SCISSOR_TEST)
+						}
+					}
+				}
         break
     }
   }
