@@ -24,6 +24,7 @@ const WebServer = new (class {
 		return require('electron').ipcRenderer.invoke('get-local-ip')
 	}
 	stop() {
+		if (!this.enable) return
 		require('electron').ipcRenderer.invoke('stop-server')
 		window.removeEventListener('beforeunload', this.stop)
 		this.load()

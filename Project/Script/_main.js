@@ -295,7 +295,7 @@ Editor.open = async function (path, agreed = false) {
 	GameLocal.initialize()
 
 	// 打开开发服务器
-	WebServer.start(path)
+	if (SettingConfig.config.server.auto) WebServer.start(path)
 }
 
 // 关闭项目

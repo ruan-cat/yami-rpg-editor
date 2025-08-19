@@ -2812,6 +2812,7 @@
     "setting": {"title": "Settings"},
     "setting-title-server": {"content": "Local Service"},
     "setting-server-port": {"label": "Port", "tip": "The port that the local service listens on"},
+    "setting-server-auto": {"label": "Automatic service activation", "tip": "Enable the project to automatically start the local service"},
     "setting-title-apkbuild": {"content": "APK Build"},
     "setting-apkbuild-outputDir": {"label": "Decompilation Output Directory", "tip": "The output directory for the decompiled APK files"},
     "setting-apkbuild-newApkPath": {"label": "New APK Output Path", "tip": "The output path for the newly built APK file"},

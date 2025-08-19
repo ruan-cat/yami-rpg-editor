@@ -16,7 +16,8 @@ const SettingConfig = new (class {
 	get defaultConfig() {
 		return {
 			server: {
-				port: 5959
+				port: 5959,
+				auto: false
 			},
 			apkbuild: {
 				apkPath: '@/app-release.apk', // 原始APK路径
@@ -52,6 +53,9 @@ const SettingConfig = new (class {
 		// 本地服务
 		$('#setting-server-port').on('input', (e) =>
 			InputEvent(e, 'server', 'port')
+		)
+		$('#setting-server-auto').on('input', (e) =>
+			InputEvent(e, 'server', 'auto')
 		)
 		// 反编译
 		$('#setting-apkbuild-outputDir').on('input', (e) =>
@@ -168,6 +172,7 @@ const SettingConfig = new (class {
 	update() {
 		const write = getElementWriter('setting-server')
 		write('port', this.config.server.port)
+		write('auto', this.config.server.auto)
 		const write2 = getElementWriter('setting-apkbuild')
 		write2('outputDir', this.config.apkbuild.outputDir)
 		write2('newApkPath', this.config.apkbuild.newApkPath)

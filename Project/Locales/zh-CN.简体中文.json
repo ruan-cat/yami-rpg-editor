@@ -2812,6 +2812,7 @@
     "setting": {"title": "设置"},
     "setting-title-server": {"content": "本地服务"},
     "setting-server-port": {"label": "端口", "tip": "本地服务监听的端口"},
+    "setting-server-auto": {"label": "自动开启服务", "tip": "打开项目自动启动本地服务"},
     "setting-title-apkbuild": {"content": "APK构建"},
     "setting-apkbuild-outputDir": {"label": "反编译输出目录", "tip": "反编译后的APK文件反编译后的输出目录"},
     "setting-apkbuild-newApkPath": {"label": "新APK输出路径", "tip": "构建后的新APK文件输出路径"},
