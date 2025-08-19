@@ -13,6 +13,8 @@ const path = require('path')
 const os = require('os')
 const ts = require('typescript')
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true' // 关闭警告
+
 // 如果启动时包含dirname参数
 // 表示应用运行在node.js调试模式中
 // 重定向根目录并开启应用的调试模式
@@ -57,9 +59,11 @@ function getLocalIpAddress() {
 }
 
 // ******************************** 本地开发服务器 ********************************
-
+let isServerState = false
+ipcMain.on('get-server-state', (event) => {
+	event.returnValue = isServerState
+})
 ipcMain.handle('start-server', (event, config) => {
-	// console.log("Start Server .")
 	const basePath = path.dirname(config.path)
 	const instanceServer = new Koa()
 	instanceServer.use(async (ctx) => {
@@ -80,13 +84,14 @@ ipcMain.handle('start-server', (event, config) => {
 	})
 
 	const server = instanceServer.listen(config.port, () => {
+		isServerState = true
 		console.log(`Start Server on http://localhost:${config.port}.`)
 	})
 
-	ipcMain.handleOnce('stop-server', (event) => {
+	ipcMain.handleOnce('stop-server', () => {
+		isServerState = false
 		server.close()
 		instanceServer.emit('close')
-		console.log('Stop Server .')
 	})
 })
 

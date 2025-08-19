@@ -1687,8 +1687,10 @@
   },
   "components": {
     "[comment]": "********** 通用 **********",
-    "[update-qr-code]": {"content": "切换其他IP", "tip": ""},
-    "[export-to-apk]": {"content": "构建APK", "tip": ""},
+    "[start-qr-code]": {"content": "开启服务", "tip": "开启本地服务"},
+    "[close-qr-code]": {"content": "关闭服务", "tip": "关闭本地服务"},
+    "[update-qr-code]": {"content": "切换其他IP", "tip": "切换到其他IP"},
+    "[export-to-apk]": {"content": "构建APK", "tip": "开始构建APK"},
     "[confirm]": {"content": "确定", "tip": ""},
     "[cancel]": {"content": "取消", "tip": ""},
     "[apply]": {"content": "应用"},

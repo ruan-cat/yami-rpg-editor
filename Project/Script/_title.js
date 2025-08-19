@@ -2210,37 +2210,8 @@ Menubar.popupOpenYamiMenu = function (target) {
 				{
 					label: get('qr'),
 					enabled: open,
-					click: async () => {
-						let osversion = ''
-						const macos = navigator.userAgent.match(/Macintosh/)
-						const winos =
-							navigator.userAgent.match(/Windows NT [0-9.]+/)
-						const bits =
-							navigator.userAgent.match(/(?<!\w)x64|x86(?!\w)/)
-						if (macos) osversion += 'Macintosh'
-						if (winos) osversion += winos
-						if (winos && bits) osversion += ' ' + bits
-						if (!osversion) osversion = 'unknown'
-						Window.open('qr-code')
-						const ips = await WebServer.getIp()
-						let index = 0
-						let url = `http://${ips[index]}:${WebServer.port}`
-						$('#qr-text1').textContent = `扫描二维码打开网页`
-						$('#qr-ps').textContent =
-							`PS：注意需在同一局域网下扫描二维码`
-						$('#qr-ps').style.color = `red`
-						$('#qr-ps1').textContent =
-							`如果内容没刷新，请Ctrl+S保存场景`
-						$('#qr-ps1').style.color = `red`
-						$('#qr-code-img').src = await WebServer.toDataUrl(url)
-						$('#qr-text').textContent = `IP：${url}`
-						$('#qr-update-button').on('click', async () => {
-							index = index >= ips.length - 1 ? 0 : ++index
-							url = `http://${ips[index]}:${WebServer.port}`
-							$('#qr-code-img').src =
-								await WebServer.toDataUrl(url)
-							$('#qr-text').textContent = `IP：${url}`
-						})
+					click: () => {
+						WebServer.open()
 					}
 				},
 				{

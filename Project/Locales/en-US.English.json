@@ -1687,7 +1687,10 @@
   },
   "components": {
     "[comment]": "********** Common **********",
-    "[update-qr-code]": {"content": "Update QRCode", "tip": ""},
+    "[start-qr-code]": {"content": "Start Service", "tip": "Start Local Service"},
+    "[close-qr-code]": {"content": "Stop Service", "tip": "Stop Local Service"},
+    "[update-qr-code]": {"content": "Switch to Other IP", "tip": "Switch to Another IP"},
+    "[export-to-apk]": {"content": "Build APK", "tip": "Start Building APK"},
     "[confirm]": {"content": "Confirm", "tip": ""},
     "[cancel]": {"content": "Cancel", "tip": ""},
     "[apply]": {"content": "Apply"},
