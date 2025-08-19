@@ -89,5 +89,10 @@
     "enabled": true,
     "alias": "",
     "keywords": "debug"
+  },{
+    "id": "54a6570d8aa52362",
+    "enabled": true,
+    "alias": "",
+    "keywords": "excel"
   }
 ]
