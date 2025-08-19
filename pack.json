@@ -1,0 +1,50 @@
+[
+  {
+    "path": "arpg-ts-chinese",
+    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-chinese",
+    "version": "1.0.0",
+    "md5": "0cf59cd20f6029edb430620e9df69eef",
+    "sha1": "5c7d2cf3b53f5c594d15f8d87c27c1093143e196",
+    "sha256": "9ffedd01aca7bdcc9ebca97e84ac2dfe4326829573f14df57d15583930e0b62b"
+  },
+  {
+    "path": "arpg-ts-english",
+    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-english",
+    "version": "1.0.0",
+    "md5": "8312ebd036e8bb8ddc5220c594c433da",
+    "sha1": "a436b8a776a530a432f0292d9e91ed6f6e62be6a",
+    "sha256": "9aa2896d18fd50965b4945a6c55ab10d5e517b50efd8c89f65f7fc8f077d8613"
+  },
+  {
+    "path": "arpg-ts-update",
+    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-update",
+    "version": "1.0.0",
+    "md5": "52e3b14f8d51f609e4bdd78d560e6706",
+    "sha1": "85b55263044d3e63fe1ade0c282f90bb96d44185",
+    "sha256": "b2a16faae210aade47a6deb481d550f8b117774a7b7ab0a81ddc5966ab08eac9"
+  },
+  {
+    "path": "electron-mac-universal.app",
+    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\electron-mac-universal.app",
+    "version": "1.0.0",
+    "md5": "86a3bb1bdc28eaf80c4bc267b5674304",
+    "sha1": "1ff782d48c2d5ec8fdcb701535e4d86f67977bd8",
+    "sha256": "5a60a7eafe1e78945667dc417f540757280c98031125712f9d48151f8fd841d1"
+  },
+  {
+    "path": "electron-win-x64",
+    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\electron-win-x64",
+    "version": "1.0.0",
+    "md5": "1bdce3af193cf983e8dd964d04445f86",
+    "sha1": "04c1d5de2f86cf54182d68643963d0d06bed75f0",
+    "sha256": "d63da301c663904536145c44f9cbf44b3308d01bf52a1c1a2ee08fe8e679c71a"
+  },
+  {
+    "path": "script",
+    "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\script",
+    "version": "1.0.0",
+    "md5": "72f05b41aab71c2b41e63de2f6cadc53",
+    "sha1": "6691c9217bff5132491e22a14dac23d71f1ad7e1",
+    "sha256": "2caaf0213be048e2ff8e5db10a90dff573312fae0dc15bf46b44726b2a71291d"
+  }
+]
