@@ -1,13 +1,20 @@
 'use strict'
 
 const { require } = window
+const { homedir } = require('os')
+
+const ConfigDir = '.openyami'
 
 // ******************************** 读取配置文件 ********************************
 
 {
+	const dir = require('path').resolve(homedir(), ConfigDir)
+	if (!require('fs').existsSync(dir)) {
+		require('fs').mkdirSync(dir, { recursive: true })
+	}
 	// 提前读取配置文件以减少等待时间
 	// promise.then的执行顺序在main.js之后
-	const path = require('path').resolve(__dirname, 'config.json')
+	const path = require('path').resolve(homedir(), ConfigDir, 'config.json')
 	window.config = require('fs')
 		.promises.readFile(path, 'utf8')
 		.then((json) => JSON.parse(json))
