@@ -341,8 +341,6 @@ FSP.writeFile = function (path, text, check = false) {
 
 // ******************************** 路径工具 ********************************
 
-const Path = require('path')
-
 // 转换至斜杠分隔符
 Path.slash = (function IIFE() {
 	const regexp = /\\/g

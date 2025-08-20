@@ -1,4 +1,119 @@
 /* 小改动或者不确定放哪的都可以放这 */
+const fs = require('fs-extra')
+const yauzl = require('yauzl')
+
+let PackMeta = JSON.parse(
+	require('fs').readFileSync(
+		Path.join(__dirname, 'Script/module', 'packmeta.json')
+	)
+) // 资源 meta 信息
+
+const TemplatesPath = Path.resolve(GlobalPath, 'Templates') // 模板路径
+if (!fs.existsSync(TemplatesPath))
+	fs.mkdirSync(TemplatesPath, { recursive: true })
+
+// 检测是否安装了资源包
+function isNoResource() {
+	const p = { ...PackMeta }
+	Object.defineProperty(p, '@', {
+		value: false,
+		enumerable: false,
+		writable: true
+	})
+	try {
+		const checkArr = []
+		// 分别检测包是否存在
+		Object.keys(p).map((v) => {
+			p[v] = {}
+			p[v]['check'] = false
+			const _path = Path.resolve(TemplatesPath, v)
+			if (fs.existsSync(_path)) {
+				p[v]['check'] = true
+				checkArr.push(true)
+			} else {
+				checkArr.push(false)
+			}
+		})
+		if (checkArr.every((v) => v)) p['@'] = true
+		return p
+	} catch {
+		return p
+	}
+}
+
+let NoResourceObj = isNoResource()
+
+window.addEventListener('localize', () => {
+	Resources.initialize() // 初始化
+	if (!Resources.checkResources()) {
+		Resources.open(true)
+	} else {
+		Resources.checkVersion()
+	}
+	Resources.loaded = true // 已检查过资源
+})
+
+const TitleNewProjectOld = Title.newProject
+Title.newProject = function () {
+	if (!Resources.loaded || !Resources.checkResources()) return // 未初始化不可创建项目
+	TitleNewProjectOld.call(Title)
+}
+
+// 解压zip
+const unzipWithProgress = async ({ zipPath, outputDir, onProgress }) => {
+	return new Promise((resolve, reject) => {
+		let totalFiles = 0
+		let extractedFiles = 0
+
+		// 打开 ZIP 文件
+		yauzl.open(zipPath, { lazyEntries: true }, (err, zipfile) => {
+			if (err) return reject(err)
+			zipfile.on('entry', () => {
+				totalFiles++
+			})
+			zipfile.readEntry()
+			zipfile.on('entry', (entry) => {
+				const destPath = Path.join(outputDir, entry.fileName)
+
+				// 如果是目录，创建目录
+				if (/\/$/.test(entry.fileName)) {
+					fs.ensureDirSync(destPath)
+					zipfile.readEntry()
+					return
+				}
+
+				// 确保目标目录存在
+				fs.ensureDirSync(Path.dirname(destPath))
+
+				// 解压文件
+				zipfile.openReadStream(entry, (err, readStream) => {
+					if (err) return reject(err)
+
+					const writeStream = fs.createWriteStream(destPath)
+					readStream.pipe(writeStream)
+
+					writeStream.on('close', () => {
+						extractedFiles++
+						const progress = Math.round(
+							(extractedFiles / totalFiles) * 100
+						)
+						onProgress?.(progress)
+
+						zipfile.readEntry()
+					})
+				})
+			})
+
+			zipfile.on('end', () => {
+				resolve('解压完成')
+			})
+
+			zipfile.on('error', (err) => {
+				reject(err)
+			})
+		})
+	})
+}
 
 CommandList.prototype.openEdit = function () {
 	Window.open('edit-data')

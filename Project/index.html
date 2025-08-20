@@ -42,6 +42,8 @@
   <script src="Script/module/command/requestURL.js" defer></script>
   <!-- 模块 -->
   <script src="Script/module/_editdata.js" defer></script>
+  <script src="Script/module/_resource.js" defer></script>
+  <script src="Script/module/_net.js" defer></script>
   <script src="Script/module/_global.js" defer></script>
   <script src="Script/module/_searchstring.js" defer></script>
   <script src="Script/module/_settingconfig.js" defer></script>
@@ -4628,6 +4630,22 @@
       </grid-box>
       <button id="setVideo-property-confirm" name="confirm">Confirm</button>
       <button id="setVideo-property-cancel" name="cancel">Cancel</button>
+    </content-frame>
+  </window-frame>
+
+  <!-- 资源窗口 -->
+  <window-frame id="resource">
+    <title-bar>
+      <close></close>
+    </title-bar>
+    <content-frame>
+      <box>
+        <box id="resource-content"></box>
+        <grid-box>
+          <button id="resource-check-version">check version</button>
+          <button id="resource-open-dir">open dir</button>
+        </grid-box>
+      </box>
     </content-frame>
   </window-frame>
 

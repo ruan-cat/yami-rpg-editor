@@ -943,7 +943,7 @@ NewProject.confirm = function (event) {
 	const folder = $('#newProject-folder').read()
 	const sPath =
 		template !== 'minimized-project'
-			? Path.resolve(__dirname, `Templates/${template}`)
+			? Path.resolve(TemplatesPath, template)
 			: Path.resolve(File.root)
 	const dPath = Path.resolve(location, folder)
 	Window.close('newProject')
@@ -1133,12 +1133,14 @@ Deployment.readFileList = async function (platform) {
 	// 读取外壳文件列表
 	switch (platform) {
 		case 'windows-x64':
-			fileList = await this.readShellList('Templates/electron-win-x64')
+			fileList = await this.readShellList(
+				Path.resolve(TemplatesPath, 'electron-win-x64')
+			)
 			this.gamedir = 'resources/app/'
 			break
 		case 'mac-universal':
 			fileList = await this.readShellList(
-				'Templates/electron-mac-universal.app'
+				Path.resolve(TemplatesPath, 'electron-mac-universal.app')
 			)
 			this.gamedir = 'Contents/Resources/app/'
 			break

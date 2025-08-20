@@ -1682,7 +1682,11 @@
       "script-change-ts":"Switch to TS",
       "script-change-js":"Switch to JS",
       "next": "Next",
-      "previous": "Previous"
+      "previous": "Previous",
+      "resource-download": "Download",
+      "resource-decompression": "Decompress",
+      "resource-check-version": "Check for Updates",
+      "resource-open-dir": "Open Template Directory"
     }
   },
   "components": {

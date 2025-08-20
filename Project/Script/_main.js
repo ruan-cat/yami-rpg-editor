@@ -414,7 +414,7 @@ Editor.saveConfig = function () {
 		const json = JSON.stringify(config, null, 2)
 		const last = config.code
 		if (json && json !== last) {
-			const path = Path.resolve(homedir(), ConfigDir, 'config.json')
+			const path = Path.resolve(GlobalPath, 'config.json')
 			FSP.writeFile(path, json).catch((error) => {
 				Log.throw(error)
 			})

@@ -247,6 +247,20 @@ ipcMain.handle('from-excel', async (event) => {
 
 // ******************************** 文件系统 ********************************
 
+// 获取存档目录Sync
+ipcMain.on('get-dir-path-sync', (event, location) => {
+	switch (location) {
+		case 'app-data':
+			event.returnValue = app.getPath('appData')
+		case 'documents':
+			event.returnValue = app.getPath('documents')
+		case 'desktop':
+			event.returnValue = app.getPath('desktop')
+		case 'local':
+			event.returnValue = app.getAppPath()
+	}
+})
+
 // 获取存档目录
 ipcMain.handle('get-dir-path', (event, location) => {
 	switch (location) {

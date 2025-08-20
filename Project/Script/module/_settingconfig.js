@@ -1,10 +1,9 @@
 const path = require('path')
-const fs = require('fs')
 
 const SettingConfig = new (class {
 	config = {}
-	homedir = homedir()
-	configPath = path.join(homedir(), ConfigDir, 'yami-config.json')
+	homedir = GlobalPathForDir
+	configPath = path.join(GlobalPath, 'yami-config.json')
 	constructor() {
 		$('#setting').on('open', this.open())
 		$('#setting-confirm').on('click', () => {

@@ -39,14 +39,9 @@ async function calculateMultipleHashes(
 	})
 }
 
-const packageJson = {
-	'arpg-ts-chinese': '1.0.0',
-	'arpg-ts-english': '1.0.0',
-	'arpg-ts-update': '1.0.0',
-	'electron-mac-universal.app': '1.0.0',
-	'electron-win-x64': '1.0.0',
-	script: '1.0.0'
-}
+const packageJson = JSON.parse(
+	fs.readFileSync('Project/Script/module/packmeta.json')
+)
 
 const tempaltePath = 'Project/Templates'
 

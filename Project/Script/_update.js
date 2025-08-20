@@ -820,15 +820,9 @@ Updater.updateToLatest = function (version) {
 
 	// 1.0.122以下版本直接覆盖全部文件
 	const dstProjectDir = Path.dirname(Editor.config.project)
-	const srcProjectDir = Path.resolve(__dirname, 'Templates/arpg-ts-update')
-	const srcScriptDir = Path.resolve(
-		__dirname,
-		'Templates/arpg-ts-update/script'
-	)
-	const srcPluginDir = Path.resolve(
-		__dirname,
-		'Templates/arpg-ts-update/plugins'
-	)
+	const srcProjectDir = Path.resolve(TemplatesPath, 'arpg-ts-update')
+	const srcScriptDir = Path.resolve(TemplatesPath, 'arpg-ts-update/script')
+	const srcPluginDir = Path.resolve(TemplatesPath, 'arpg-ts-update/plugins')
 	const dstScriptDir = Path.resolve(dstProjectDir, 'Script')
 
 	// 删除JS文件
@@ -903,15 +897,9 @@ Updater.updateToLatest = function (version) {
 Updater.updateIncrementalChanges = function (version) {
 	const verNum = Editor.getVersionNumber(version)
 	const dstProjectDir = Path.dirname(Editor.config.project)
-	const srcProjectDir = Path.resolve(__dirname, 'Templates/arpg-ts-update')
-	const srcScriptDir = Path.resolve(
-		__dirname,
-		'Templates/arpg-ts-update/script'
-	)
-	const srcPluginDir = Path.resolve(
-		__dirname,
-		'Templates/arpg-ts-update/plugins'
-	)
+	const srcProjectDir = Path.resolve(TemplatesPath, 'arpg-ts-update')
+	const srcScriptDir = Path.resolve(TemplatesPath, 'arpg-ts-update/script')
+	const srcPluginDir = Path.resolve(TemplatesPath, 'arpg-ts-update/plugins')
 	const dstScriptDir = Path.resolve(dstProjectDir, 'Script')
 	const bakFolderDir = Path.resolve(dstProjectDir, `${version}.bak`)
 	const messages = []

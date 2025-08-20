@@ -1677,12 +1677,15 @@
       "versionIsTooHigh": "项目版本高于编辑器版本，无法打开",
       "yes": "是",
       "no": "否",
-      "confirm": "确定",
       "script-change-ts":"切换为TS",
       "script-change-js":"切换为JS",
       "cancel": "取消",
       "next": "下一个",
-      "previous": "上一个"
+      "previous": "上一个",
+      "resource-download":"下载",
+      "resource-decompression":"解压",
+      "resource-check-version":"检查更新",
+      "resource-open-dir":"打开模板目录"
     }
   },
   "components": {
@@ -5581,6 +5584,8 @@
     "script": {"title": "脚本"},
 
     "[comment]": "********** 编辑数据 **********",
-    "edit-data": {"title": "编辑数据"}
+    "edit-data": {"title": "编辑数据"},
+    "[comment]": "********** 资源窗口 **********",
+    "resource": {"title": "资源管理"}
   }
 }

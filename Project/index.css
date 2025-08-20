@@ -6147,6 +6147,37 @@ anim-dir.selected {
 }
 
 /* --------------------------------
+ * 资源窗口
+ * --------------------------------
+ */
+
+#resource {
+	width: 520px;
+	height: 700px;
+}
+.resource-item {
+	display: flex;
+	width: 100%;
+	margin: 10px 0;
+	padding: 0 4px;
+}
+.resource-item text-box {
+	flex: 1;
+}
+.resource-item button {
+	position: relative;
+}
+
+#resource-check-version {
+	right: 108px;
+	bottom: 10px;
+}
+#resource-open-dir {
+	right: 10px;
+	bottom: 10px;
+}
+
+/* --------------------------------
  * 设置窗口
  * --------------------------------
  */
