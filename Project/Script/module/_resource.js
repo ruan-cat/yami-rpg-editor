@@ -99,13 +99,20 @@ const Resources = new (class {
 	}
 
 	temp(val) {
+		const value = val.replace(/[.]/g, '_') // dom id 不能特殊字符
 		const targetPath = Path.resolve(TemplatesPath, `${val}_pack.zip`)
 		const _check = () => {
 			NoResourceObj = isNoResource() // 更新最新数据
 			if (NoResourceObj[val].check) {
 				button.disable()
+				buttonDelete.enable()
 				textbox.enable()
 				textbox.write(`v${PackMeta[val]}`)
+			} else {
+				if (!fs.existsSync(tempPath)) buttonDelete.disable()
+				button.enable()
+				textbox.disable()
+				textbox.write('')
 			}
 			// 判断目录下是否有zip文件，有则删除它节省空间
 			if (fs.existsSync(targetPath)) fs.unlink(targetPath)
@@ -117,10 +124,11 @@ const Resources = new (class {
 		}
 
 		const domPase = new DOMParser().parseFromString(
-			`<box id="resource-item-${val}" class='resource-item'>
-        <text>${val}:&emsp;</text>
+			`<box id="resource-item-${value}" class='resource-item'>
+        <text>${value}:&emsp;</text>
         <text-box></text-box>
-        <button id='resource-item-${val}-download' name='resource-download'></button>
+        <button id='resource-item-${value}-download' name='resource-download'></button>
+        <button id='resource-item-${value}-delete' name='delete'></button>
         </box>`,
 			'text/html'
 		)
@@ -129,8 +137,9 @@ const Resources = new (class {
 		const textbox = boxDom.querySelector('text-box')
 		textbox.disable()
 		textbox.input.readOnly = true
-		const button = boxDom.querySelector('button')
+		const button = boxDom.querySelector(`#resource-item-${value}-download`)
 		button.textContent = Local.get('confirmation.resource-download')
+		// 绑定下载
 		button.on('click', () => {
 			const url = `https://github.com/Open-Yami-Community/yami-executable/releases/download/win/${val}_pack.zip`
 			const downloadurl = `${this.fastGithubPrefix}${url}`
@@ -171,6 +180,16 @@ const Resources = new (class {
 				})
 		})
 
+		const buttonDelete = boxDom.querySelector(
+			`#resource-item-${value}-delete`
+		)
+		buttonDelete.textContent = Local.get('common.delete')
+		const tempPath = Path.resolve(TemplatesPath, val)
+		buttonDelete.on('click', () => {
+			if (fs.existsSync(tempPath))
+				fs.rmSync(tempPath, { recursive: true, force: true })
+			_check()
+		})
 		_check()
 	}
 

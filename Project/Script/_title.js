@@ -2210,6 +2210,12 @@ Menubar.popupOpenYamiMenu = function (target) {
 					}
 				},
 				{
+					label: get('resource'),
+					click: () => {
+						Resources.open()
+					}
+				},
+				{
 					label: get('qr'),
 					enabled: open,
 					click: () => {

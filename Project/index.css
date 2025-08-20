@@ -6167,6 +6167,9 @@ anim-dir.selected {
 .resource-item button {
 	position: relative;
 }
+.resource-item button {
+	position: relative;
+}
 
 #resource-check-version {
 	right: 108px;

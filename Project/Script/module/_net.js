@@ -1,4 +1,5 @@
 const axios = require('axios')
+
 const Net = new (class {
 	get = axios.get
 	post = axios.post
@@ -43,8 +44,7 @@ const Net = new (class {
 			if (outputPath) {
 				const arrayBuffer = await response.data.arrayBuffer()
 				const buffer = Buffer.from(arrayBuffer)
-				fs.writeFileSync(outputPath, buffer)
-				return '文件下载完成'
+				return fs.writeFileSync(outputPath, buffer)
 			} else {
 				const arrayBuffer = await response.data.arrayBuffer()
 				return Buffer.from(arrayBuffer)

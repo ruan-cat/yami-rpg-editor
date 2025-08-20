@@ -370,7 +370,8 @@
     "menuOpenYami": {
       "setting":"Setting",
       "qr": "QR Code",
-      "export_apk": "Build APK"
+      "export_apk": "Build APK",
+      "resource": "Resource Manager"
     },
     "menuTab": {
       "close": "Close",

@@ -370,7 +370,8 @@
     "menuOpenYami": {
       "setting":"设置",
       "qr": "QR Code",
-      "export_apk": "构建APK"
+      "export_apk": "构建APK",
+      "resource": "资源管理"
     },
     "menuTab": {
       "close": "关闭",
