@@ -84,17 +84,28 @@ const Resources = new (class {
 		PackMeta = this.readTemplate() // 读取本地模板信息
 		const jsonParse = (await this.downloadNetMeta()).data
 		const list = Object.keys(NoResourceObj)
+
+		let versionString = ''
+
 		for (let i of list) {
 			const elem = jsonParse.find((v) => v.path === i)
 			if (this.compareVersions(elem.version, PackMeta[i]) === 0) {
 				continue
 			}
 			isReOpen = true
+			versionString += `${i} ${PackMeta[i]} -> ${elem.version}\n`
 		}
+
+		const get = Local.createGetter('confirmation')
 
 		if (isReOpen) {
 			Window.close('resource')
 			Resources.open(true)
+			Window.confirm({ message: versionString }, [
+				{
+					label: get('yes')
+				}
+			])
 		}
 	}
 
