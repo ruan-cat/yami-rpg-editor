@@ -4142,12 +4142,6 @@ let Command = new class CommandCompiler {
           const mainEvent = CurrentEvent as any
           if (mainEvent[Command.asyncKey] === undefined) {
             mainEvent[Command.asyncKey] = []
-            CurrentEvent.onFinish(() => {
-              let i = asyncEvents.length
-              while (--i >= 0) {
-                asyncEvents[i].finish()
-              }
-            })
           }
           const asyncEvents = mainEvent[Command.asyncKey] as Array<EventHandler>
           const asyncEvent = new EventHandler(copy)
