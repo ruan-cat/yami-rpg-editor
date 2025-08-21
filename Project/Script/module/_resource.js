@@ -181,6 +181,7 @@ const Resources = new (class {
 						j[val] = remoteData.find((v) => val === v.path).version
 						this.writeTemplate(j)
 						// 下载完成，也解压完成
+						PackMeta = this.readTemplate() // 重新读取本地模板信息
 						_check()
 						button.textContent = Local.get(
 							'confirmation.resource-download'
