@@ -97,10 +97,10 @@ const Resources = new (class {
 		}
 
 		const get = Local.createGetter('confirmation')
-
 		if (isReOpen) {
 			Window.close('resource')
 			Resources.open(true)
+
 			Window.confirm({ message: versionString }, [
 				{
 					label: get('yes')
@@ -133,6 +133,7 @@ const Resources = new (class {
 					.append(document.createElement('close'))
 			}
 		}
+		const get = Local.createGetter('confirmation')
 
 		const domPase = new DOMParser().parseFromString(
 			`<box id="resource-item-${value}" class='resource-item'>
@@ -186,8 +187,13 @@ const Resources = new (class {
 						)
 					})
 				})
-				.catch(() => {
+				.catch((e) => {
 					button.enable()
+					Window.confirm({ message: e.message }, [
+						{
+							label: get('yes')
+						}
+					])
 				})
 		})
 
