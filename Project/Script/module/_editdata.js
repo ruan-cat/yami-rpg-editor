@@ -114,20 +114,20 @@ const EditDataInstance = new (class {
 			return null
 		}
 	}
+
 	save() {
 		const modelValue = this.model.getValue()
 		const parse = this.parseJSON(modelValue)
 		if (!parse) return
-		const history = this.eventListDom.history
 		const originalStart = this.eventListDom.start
 		const originalEnd = this.eventListDom.end
 		if (Array.isArray(this.currentContent)) {
 			for (const ind in this.currentContent) {
 				const { node, value } = this.currentContent[ind]
-				if (!(ind in parse)) continue
+				if (!(ind in parse)) continue // 索引不存在
 				const changeContent = parse[ind]
 				if (JSON.stringify(value) === JSON.stringify(changeContent))
-					continue
+					continue // 内容没修改
 				const parent = node.dataParent
 				const list = node.dataList
 
@@ -141,41 +141,15 @@ const EditDataInstance = new (class {
 					value: buffer,
 					configurable: true
 				})
-				const { id: originalId, target: originalTarget } = Command
-				let originalIndex = history.index
-				try {
-					this.eventListDom.inserting = true
-					this.eventListDom.start = node.dataIndex
-					this.eventListDom.end = node.dataIndex
-					Command.id = changeContent.id
-					Command.target = this.eventListDom
-					Command.save(changeContent.params)
-					originalIndex = history.index
-				} finally {
-					this.eventListDom.end = this.eventListDom.start
-					this.eventListDom.delete()
-					const replaceObject =
-						history.stack[history.stack.length - 1]
-					history.stack.splice(history.stack.length - 2, 2)
-					const index = node.dataIndex - 1
-					/* 
-					进行多行编辑时，按理来说循环并替换修改的项就可以
-					但不知道为啥这会有问题，导致数据错乱（我猜是因为save时会导致列表重新排序？）
-					这里我用 插入+删除 代替了替换操作并伪造了一个替换的操作历史
-					*/
-					history.save({
-						type: 'replace',
-						parent: parent,
-						array: list,
-						index,
-						commands: [replaceObject.commands[0], changeContent]
-					})
-					history.index = originalIndex
-					this.eventListDom.inserting = false
-					Command.id = originalId
-					Command.target = originalTarget
-				}
+
+				this.eventListDom.start = node.dataIndex
+				this.eventListDom.end = node.dataIndex
+				this.eventListDom.inserting = false
+				this.eventListDom.save(changeContent)
+
+				delete changeContent.buffer // 强制清除buffer，确保能更新
 			}
+			this.eventListDom.update()
 			this.eventListDom.select(originalStart, originalEnd)
 		} else if (
 			JSON.stringify(this.currentContent.value) !== JSON.stringify(parse)
@@ -195,19 +169,17 @@ const EditDataInstance = new (class {
 				configurable: true
 			})
 			this.currentContent.node.dataItem = parse
-			const { id: originalId, target: originalTarget } = Command
-			const originalInserting = this.eventListDom.inserting
-			try {
-				this.eventListDom.inserting = false
-				Command.id = parse.id
-				Command.target = this.eventListDom
-				Command.save(parse.params)
-			} finally {
-				this.eventListDom.inserting = originalInserting
-				Command.id = originalId
-				Command.target = originalTarget
-			}
+
+			this.eventListDom.start = node.dataIndex
+			this.eventListDom.end = node.dataIndex
+			this.eventListDom.inserting = false
+			this.eventListDom.save(parse)
+
+			delete parse.buffer // 强制清除buffer，确保能更新
+			this.eventListDom.update()
+			this.eventListDom.select(originalStart, originalEnd)
 		}
+
 		this.currentContent = null
 		this.setChangeState(false)
 		Window.close('edit-data')
@@ -327,7 +299,11 @@ const EditDataInstance = new (class {
 			const sData = sElement.dataItem
 			this.currentContent = {
 				node: sElement,
-				value: { id: sData.id, params: sData.params }
+				value: {
+					id: sData.id,
+					params: sData.params,
+					commands: sData.commands // 添加commands属性
+				}
 			}
 			// 单个
 			this.model.setValue(
@@ -348,7 +324,8 @@ const EditDataInstance = new (class {
 						node: elem,
 						value: {
 							id: eData.id,
-							params: eData.params
+							params: eData.params,
+							commands: eData.commands // 添加commands属性
 						}
 					})
 				if (elem.mark === 'header') includeArr.push(eData) // 将buffer也存储，这样能保证有唯一性
