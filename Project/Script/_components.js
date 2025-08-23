@@ -1896,6 +1896,30 @@ class TextBox extends HTMLElement {
 		if (process.platform === 'darwin') {
 			input.on('keydown', TextBox.macInputKeydown)
 		}
+
+		// 添加合成事件
+		let isEditing = false
+		input.addEventListener('compositionstart', () => {
+			isEditing = true
+		})
+		input.addEventListener('compositionend', () => {
+			isEditing = false
+		})
+		input.addEventListener(
+			'keydown',
+			(e) => {
+				if (!isEditing) {
+					return
+				}
+				switch (e.code) {
+					case 'Escape':
+					case 'Enter':
+						e.stopPropagation()
+						return
+				}
+			},
+			{ capture: true }
+		)
 	}
 
 	// 读取数据
