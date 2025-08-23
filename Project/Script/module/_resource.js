@@ -153,7 +153,7 @@ const Resources = new (class {
 		button.textContent = Local.get('confirmation.resource-download')
 		// 绑定下载
 		button.on('click', () => {
-			const url = `https://github.com/Open-Yami-Community/yami-executable/releases/download/win/${val}_pack.zip`
+			const url = `https://github.com/Open-Yami-Community/yami-rpg-editor/releases/download/win/${val}_pack.zip`
 			const downloadurl = `${this.fastGithubPrefix}${url}`
 			button.disable()
 			button.textContent = Local.get('confirmation.resource-download')
