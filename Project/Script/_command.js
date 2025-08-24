@@ -7417,9 +7417,14 @@ Command.cases.playAnimation = {
 		return priority > 0 ? Token('+') + abs : Token('-') + abs
 	},
 	parseOffsetY: function (offsetY) {
-		if (offsetY === 0) return ''
-		const abs = Command.setNumberColor(Math.abs(offsetY)) + 'px'
-		return offsetY > 0 ? abs : Token('-') + abs
+		let num
+		if (typeof offsetY === 'number')
+			num = Command.setNumberColor(Math.abs(offsetY)) + 'px'
+		return typeof offsetY === 'number'
+			? offsetY > 0
+				? num
+				: Token('-') + num
+			: Command.parseVariableNumber(offsetY)
 	},
 	parse: function ({
 		mode,

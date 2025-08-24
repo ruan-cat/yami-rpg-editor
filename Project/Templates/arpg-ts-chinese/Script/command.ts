@@ -5325,7 +5325,7 @@ let Command = new class CommandCompiler {
     motion: string
     rotatable: boolean
     priority: number
-    offsetY: number
+    offsetY: number | VariableGetter
     angle: number | VariableGetter
     speed: number | VariableGetter
     wait: boolean
@@ -5339,6 +5339,7 @@ let Command = new class CommandCompiler {
         getPoint = Command.compileActor(actor!)
         break
     }
+    const getOffsetY = Command.compileNumber(offsetY, 0)
     const getAngle = Command.compileNumber(angle)
     const getSpeed = Command.compileNumber(speed, 1, 0.1, 10)
     const data = Data.animations[animationId]
@@ -5355,7 +5356,7 @@ let Command = new class CommandCompiler {
         if (animation.setMotion(motionName)) {
           animation.rotatable = rotatable
           animation.priority = priority
-          animation.offsetY = offsetY
+          animation.offsetY = getOffsetY()
           animation.speed = getSpeed()
           animation.setAngle(Math.radians(getAngle()))
           animation.onFinish(() => {
