@@ -2,18 +2,18 @@
   {
     "path": "arpg-ts-chinese",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-chinese",
-    "version": "1.0.1",
-    "md5": "ccd4e4ba3fb571c72860af3cd143f7f5",
-    "sha1": "7af75a4914a43b496d405247f0d8950a845584b9",
-    "sha256": "05bb5df65e0efa1123f450a3bba722154290c53449a616a6b7689d34b09e4345"
+    "version": "1.0.2",
+    "md5": "8c17134a8fee90ca3e0e90e859321817",
+    "sha1": "f0ba13145d54e74e100dfa759dbc4254ff53dcb4",
+    "sha256": "500895f97fda497913f181d28bedbe65ce23dd00c3261b38eebf1e751d685c5d"
   },
   {
     "path": "arpg-ts-english",
     "realPath": "F:\\ex\\yami\\yami-rpg-editor\\Project\\Templates\\arpg-ts-english",
-    "version": "1.0.1",
-    "md5": "d45d6ab9f9064e0dab56cafc077fb97a",
-    "sha1": "3e5a387e38cda535a4b63d807fe35624354377c2",
-    "sha256": "edceb237a9b2f9e04a013f7e6abff8f086ad416f61ddcb4481c18d8146fe1e17"
+    "version": "1.0.2",
+    "md5": "6dc9606cd8b7324dd5aa280075bf0f52",
+    "sha1": "72690d1faa5661b400c8f4b5ebde915131abc75a",
+    "sha256": "251c5f1b3aeb0da91c2b576a69e8db7cd643113c47e14b115ea50476dd72c05f"
   },
   {
     "path": "arpg-ts-update",
