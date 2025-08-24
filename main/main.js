@@ -548,7 +548,7 @@ const createEditorWindow = function () {
 		// 启动'tsc --watch'进程
 		const tscPath = path.join(
 			__dirname,
-			'node_modules',
+			'../node_modules',
 			'typescript',
 			'lib',
 			'tsc.js'

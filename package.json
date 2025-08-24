@@ -1,7 +1,7 @@
 {
 	"name": "yami-rpg-editor",
 	"version": "1.0.0",
-	"main": "main.js",
+	"main": "main/main.js",
 	"packageManager": "pnpm@10.13.1",
 	"productName": "Yami RPG Editor",
 	"author": "Yami",
@@ -81,8 +81,7 @@
 					"!Templates/**/*"
 				]
 			},
-			"main.js",
-			"apk.js",
+			"main/*.js",
 			"package.json"
 		],
 		"extraResources": [
