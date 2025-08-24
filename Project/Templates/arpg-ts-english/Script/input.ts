@@ -793,10 +793,11 @@ let Controller = new class ControllerManager {
     // 重置按钮
     this.buttonCode = -1
     this.buttonName = ''
+    const deadzone = Data.config?.deadzone ?? 0.4
 
     // 更新左摇杆
     let leftStickChanged = false
-    if (axes[0] ** 2 + axes[1] ** 2 > 0.4) {
+    if (axes[0] ** 2 + axes[1] ** 2 > deadzone) {
       const radians = Math.atan2(axes[1], axes[0])
       const degrees = Math.modDegrees(Math.degrees(radians))
       states.LeftStickAngle = degrees
@@ -813,7 +814,7 @@ let Controller = new class ControllerManager {
 
     // 更新右摇杆
     let rightStickChanged = false
-    if (axes[2] ** 2 + axes[3] ** 2 > 0.4) {
+    if (axes[2] ** 2 + axes[3] ** 2 > deadzone) {
       const radians = Math.atan2(axes[3], axes[2])
       const degrees = Math.modDegrees(Math.degrees(radians))
       states.RightStickAngle = degrees

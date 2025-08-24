@@ -2,6 +2,7 @@
   "gameId": "99a4069cae2ce166",
   "deployed": false,
   "preload": "always",
+  "deadzone": 0.4,
   "window": {
     "title": "My Project",
     "width": 1280,

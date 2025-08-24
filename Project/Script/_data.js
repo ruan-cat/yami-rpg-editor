@@ -1078,7 +1078,7 @@ Project.initialize = function () {
     #config-soundAttenuation-distance, #config-soundAttenuation-easingId,
     #config-webgl-desynchronized, #config-webgl-textureMagFilter, #config-webgl-textureMinFilter,
     #config-script-autoCompile, #config-save-location, #config-save-subdir,
-    #config-localization-languages, #config-localization-default, #config-preload`).on(
+    #config-localization-languages, #config-localization-default, #config-preload, #config-deadzone`).on(
 		'input',
 		this.paramInput
 	)
@@ -1142,6 +1142,7 @@ Project.open = function () {
 	write('localization-languages')
 	write('localization-default')
 	write('preload')
+	write('deadzone')
 }
 
 // 启动TypeScript编译

@@ -108,6 +108,7 @@ Editor.initialize = async function () {
 			]
 		)
 	}
+	EventBus.emit('editor_loaded')
 }
 
 // 打开项目

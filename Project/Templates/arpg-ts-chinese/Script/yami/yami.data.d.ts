@@ -86,6 +86,7 @@ type ConfigFile = {
   gameId: string
   deployed: boolean
   preload: 'never' | 'always' | 'deployed'
+  deadzone: number
   window: {
     title: string
     width: number

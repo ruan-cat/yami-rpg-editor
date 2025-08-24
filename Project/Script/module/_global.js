@@ -2,6 +2,19 @@
 const fs = require('fs-extra')
 const yauzl = require('yauzl')
 
+EventBus.once('editor_loaded', () => {
+	// 更新项目数据
+	const checkForProjectUpdatesOrigin = Editor.checkForProjectUpdates
+	Editor.checkForProjectUpdates = function (verNum) {
+		checkForProjectUpdatesOrigin.call(this, verNum)
+		// 增加缺失的属性
+		if (!Data.config.deadzone) {
+			Data.config.deadzone = 0.4
+			Project.changed = true
+		}
+	}
+})
+
 let PackMeta = JSON.parse(
 	require('fs').readFileSync(
 		Path.join(__dirname, 'Script/module', 'packmeta.json')

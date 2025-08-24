@@ -3004,6 +3004,7 @@
       "always": {"name": "Always", "tip": "Preloads media files into memory to prevent flickering when displaying images for the first time and to reduce audio playback delay."},
       "deployed": {"name": "Only After Deployment", "tip": "Disabled during debugging, enabled only after deployment."}
     }},
+    "config-deadzone":{"label":"Custom dead zone","tip":"Custom dead zone for the handle, range (0-1)"},
 
     "[comment]": "********** Easing **********",
     "easing": {"title": "Easing"},

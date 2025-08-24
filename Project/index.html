@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width" />
   <link rel="stylesheet" href="index.css" />
   <link rel='stylesheet' href='vs/editor/editor.main.css' />
+  <script src="Script/module/_eventbus.js" defer></script>
   <script src="Script/_util.js" defer></script>
   <script src="Script/_file.js" defer></script>
   <script src="Script/_components.js" defer></script>
@@ -2482,6 +2483,7 @@
             id="config-localization-default"></select-box>
           <text id="config-other-summary" class="project-summary">Other Options</text>
           <text class="project-label">Preload Files</text><select-box id="config-preload"></select-box>
+          <text class="project-label">dead Zone</text><number-box id="config-deadzone" min="0" max="1" step="0.01" decimals="2"></number-box>
         </box>
       </box>
       <button id="project-confirm" name="confirm">Confirm</button>
