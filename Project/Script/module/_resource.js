@@ -89,7 +89,10 @@ const Resources = new (class {
 
 		for (let i of list) {
 			const elem = jsonParse.find((v) => v.path === i)
-			if (this.compareVersions(elem.version, PackMeta[i]) === 0) {
+			if (
+				this.compareVersions(elem.version, PackMeta?.[i] ?? '1.0.0') ===
+				0
+			) {
 				continue
 			}
 			isReOpen = true
@@ -178,7 +181,9 @@ const Resources = new (class {
 						// 更新template.json本地版本号
 						const remoteData = (await this.downloadNetMeta()).data
 						const j = this.readTemplate()
-						j[val] = remoteData.find((v) => val === v.path).version
+						j[val] =
+							remoteData.find((v) => val === v.path)?.version ??
+							'1.0.0'
 						this.writeTemplate(j)
 						// 下载完成，也解压完成
 						PackMeta = this.readTemplate() // 重新读取本地模板信息

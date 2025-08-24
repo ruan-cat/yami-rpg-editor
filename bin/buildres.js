@@ -54,6 +54,12 @@ const resArray = fs
 		version: packageJson[v]
 	}))
 
+resArray.push({
+	path: 'Apk',
+	realPath: 'Project/Apk',
+	version: packageJson['Apk']
+})
+
 async function zipFolder(sourceDir, outPath) {
 	return new Promise((resolve, reject) => {
 		if (!fs.existsSync(sourceDir)) {

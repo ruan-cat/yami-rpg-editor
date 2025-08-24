@@ -78,7 +78,8 @@
 				"filter": [
 					"**",
 					"!config.json",
-					"!Templates/**/*"
+					"!Templates/**/*",
+					"!Apk/**/*"
 				]
 			},
 			"main/*.js",

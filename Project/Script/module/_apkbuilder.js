@@ -46,7 +46,7 @@ const ApkBuilder = new (class {
 			'apk'
 		)
 		if (typeof line === 'string' && line?.startsWith('@')) {
-			return Path.resolve(__dirname, 'Apk', line.replace('@', '.'))
+			return Path.resolve(TemplatesPath, 'Apk', line.replace('@', '.'))
 		} else if (typeof line === 'string' && line?.startsWith('$')) {
 			return Path.resolve(pathPrefix, line.replace('$', '.'))
 		} else if (typeof line === 'string' && line?.startsWith('~')) {
@@ -64,6 +64,7 @@ const ApkBuilder = new (class {
 			config[v] = this.processPathOnly(config[v])
 		})
 		config.projectPath = Path.dirname(Editor.config.project)
+		console.log(config)
 		return config
 	}
 })()

@@ -2322,7 +2322,7 @@ Menubar.popupOpenYamiMenu = function (target) {
 								ApkBuilder.build({
 									...config,
 									...SettingConfig.config.apkbuild,
-									...SettingConfig.config.sgined
+									...SettingConfig.config.signed
 								})
 							})
 							// 加载状态
